@@ -30,7 +30,8 @@ twitter_username: ""
 github_username:  chaneeh
 
 # Build settings
-theme: minima
+#theme: minima
+theme: jekyll-theme-clean-blog
 plugins:
   - jekyll-feed
 
