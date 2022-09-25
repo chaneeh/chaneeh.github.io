@@ -31,7 +31,7 @@ github_username:  chaneeh
 
 # Build settings
 #theme: minima
-remote_theme: jekyll-theme-clean-blog
+theme: jekyll-theme-clean-blog
 plugins:
   - jekyll-feed
 
