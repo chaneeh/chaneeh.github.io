@@ -61,22 +61,7 @@ $ git remote add origin {GitHub_Page Repo}
 $ git push -u origin master
 ```
 
-## 4. initial setting
-
-```bash
-# remove unnecessary files
-$ rm .editorconfig
-$ rm .gitattributes
-$ rm .github
-$ rm -r /docs
-$ rm -r /test
-$ rm CHANGELOG.md
-$ rm README.md
-$ rm screenshot-layouts.png
-$ rm screenshot.png
-```
-
-## 5. posting
+## 4. posting
 
 ```bash
 $ mkdir _posts
@@ -89,7 +74,7 @@ $ vi 2023-01-08-first-posting.md
 $ bundle exec jekyll serve
 ```
 
-## 6. advanced settings
+## 5. advanced settings
    - ### _config.yml
     
         ```bash
@@ -138,7 +123,7 @@ $ bundle exec jekyll serve
 
 
 
-## 7. reference
+## 6. reference
 
 - **M1 Mac에서 github.io 블로그 준비하기** 😃
     - [https://choijaegwon.github.io/githubblog/GithubBlog1/](https://choijaegwon.github.io/githubblog/GithubBlog1/)
