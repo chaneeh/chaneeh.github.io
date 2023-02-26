@@ -49,7 +49,7 @@ $ bundle install
 $ bundle exec jekyll serve
 ```
 
-## 3. choose theme & create repo
+## 3. create repo & setting theme
 
 ```bash
 $ git clone https://github.com/mmistakes/minimal-mistakes.git
@@ -67,7 +67,8 @@ $ git push -u origin master
 $ mkdir _posts
 $ cd _posts
 
-$ touch 2023-01-08-first-posting.md # YYYY-MM-DD-title.md
+# YYYY-MM-DD-title.md
+$ touch 2023-01-08-first-posting.md 
 $ vi 2023-01-08-first-posting.md
 
 # local hosting
