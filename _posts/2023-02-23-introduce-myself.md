@@ -138,7 +138,7 @@ $ bundle exec jekyll serve
 
 
 
-## 7. reference websites
+## 7. reference
 
 - **M1 Mac에서 github.io 블로그 준비하기** 😃
     - [https://choijaegwon.github.io/githubblog/GithubBlog1/](https://choijaegwon.github.io/githubblog/GithubBlog1/)
