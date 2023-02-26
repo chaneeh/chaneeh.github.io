@@ -112,7 +112,7 @@ $ bundle exec jekyll serve
               # url: "mailto:your.name@email.com"
         ```
 
-   - ### pages/{page_name}.md
+   - ### _pages/{page_name}.md
     
         ```bash
         category-archive.md
