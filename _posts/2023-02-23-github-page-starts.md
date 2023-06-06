@@ -132,7 +132,7 @@ tag, category 별로 분류해주는 페이지를 만듭시다
 
 
 
-## 6. reference
+# Reference
 
 - **M1 Mac에서 github.io 블로그 준비하기** 😃
     - [https://choijaegwon.github.io/githubblog/GithubBlog1/](https://choijaegwon.github.io/githubblog/GithubBlog1/)

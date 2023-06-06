@@ -19,7 +19,8 @@ aws cli들은 infra 구축의 자동화를 위해 자주 쓰이는 interface 입
 
 예시를 통해 자주 쓰이는 aws cli 및 option 사용 방법들을 정리해보았습니다.
 
-## Tutorial : [ec2] describe-instances
+# Tutorial
+## [ec2] describe-instances
 
 ### **Synopsis**
 
@@ -40,22 +41,14 @@ aws ec2 describe-instances
 ---
 
 - `instance-id` - The ID of the instance
-- `instance-state-name` - The state of the instance (`pending` | `running` | `shutting-down` | `terminated` | `stopping` | `stopped` )
-- `tag:<key>` - The key/value combination of a tag assigned to the resource. Use the tag key in the filter name and the tag value as the filter value. For example, to find all resources that have a tag with the key `Owner` and the value `TeamA` , specify `tag:Owner` for the filter name and `TeamA` for the filter value.
+- `instance-state-name` - The state of the instance 
+- `tag:<key>` - The key/value combination of a tag assigned to the resource. Use the tag key in the filter name and the tag value as the filter value. 
 - (structure)
-    - A filter name and value pair that is used to return a more specific list of results from a describe operation. Filters can be used to match a set of resources by specific criteria, such as tags, attributes, or IDs.
-    - If you specify multiple filters, the filters are joined with an `AND` , and the request returns only results that match all of the specified filters.
+    - operation대로 좀더 구체적인 result를 내는 방식입니다.
     - Name → (string)
         - The name of the filter. Filter names are case-sensitive.
     - Values -> (list)
-        - The filter values. Filter values are case-sensitive. If you specify multiple values for a filter, the values are joined with an `OR` , and the request returns all results that match any of the specified values.
-        
-
-Shorthand Syntax:
-
-```bash
-Name=string,Values=string,string ...
-```
+        - The filter values.
 
 **`--instance-ids`**
 
@@ -97,3 +90,72 @@ Output:
     ]
 }
 ```
+
+**Example 2: To filter for instances with the specified type and key-name**
+
+The following `describe-instances` example uses filters to scope the results to instances of the specified type.
+
+```bash
+aws ec2 describe-instances \
+    --filters Name=instance-type,Values=t2.xlarge && Name=key-name,Values=sb-ai-team-pem-admin
+```
+
+**Example 3: To filter for instances with the specified name tag** 
+
+The following `describe-instances` example uses name tag filters to scope the results to instances of the specified name "K8s-mng-system-v2"
+
+```bash
+aws ec2 describe-instances \
+    --filters Name=tag:Name,Values=K8s-mng-system-v2
+```
+
+**Example 4: To filter for instances with the specified response columns**
+
+The following `describe-instances` examples display the instance ID, Availability Zone, and the value of the `Name` tag for instances that have a tag with the name `tag-key`, in table format.
+
+```bash
+aws ec2 describe-instances \
+    --query 'Reservations[*].Instances[*].{Instance:InstanceId,AZ:Placement.AvailabilityZone,Name:Tags[?Key==`Name`]|[0].Value}' \
+    --output table
+```
+
+Output
+
+```bash
+-------------------------------------------------------------
+|                     DescribeInstances                     |
++--------------+-----------------------+--------------------+
+|      AZ      |       Instance        |        Name        |
++--------------+-----------------------+--------------------+
+|  us-east-2b  |  i-057750d42936e468a  |  my-prod-server    |
+|  us-east-2a  |  i-001efd250faaa6ffa  |  test-server-1     |
+|  us-east-2a  |  i-027552a73f021f3bd  |  test-server-2     |
++--------------+-----------------------+--------------------+
+```
+
+**Example 5: To filter for instances with the specified name tag**
+
+```bash
+aws ec2 describe-instances \
+    --query 'Reservations[*].Instances[*].{Instance:InstanceId, Name:Tags[?Value==`my-prod-server`]|[0].Value}' \
+    --output table
+```
+
+Output
+
+```bash
+----------------------------------------------
+|              DescribeInstances             |
++----------------------+---------------------+
+|       Instance       |        Name         |
++----------------------+---------------------+
+|  i-1234567890abcdefg |  None               |
+|  i-11111111aaaaaaaaa |  None               |
+|  i-abcdefg1234567890 |  my-prod-server     |
+|  i-aaaaaaaa111111111 |  None               |
++----------------------+---------------------+
+```
+
+# References
+- **aws cli documents**
+    - [https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-instances.html](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-instances.html)
