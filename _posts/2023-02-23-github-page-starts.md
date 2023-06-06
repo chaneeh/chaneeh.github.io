@@ -20,7 +20,7 @@ github를 이용하여 개인 홈페이지를 만드는 과정 입니다.
 
 # Tutorial
 ## 1. install ruby by rbenv
-
+`Ruby` 동적 객체 지향 스크립트 프로그래밍 언어입니다. 이후 사용할 사이트 생성기 `Jekyll`도 이 언어를 기반으로 만들어 졌습니다
 ```bash
 $ brew update
 $ brew install rbenv ruby-build
