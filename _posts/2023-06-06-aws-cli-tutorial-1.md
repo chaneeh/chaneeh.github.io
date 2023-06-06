@@ -1,6 +1,6 @@
 ---
-title:   "AWS cli 튜토리얼 - 1"
-excerpt: "AWS cli 튜토리얼 - 1"
+title:   "AWS cli 튜토리얼 - [ec2]"
+excerpt: "AWS cli 튜토리얼 - [ec2]"
 toc: true
 toc_sticky: true
 
@@ -17,7 +17,7 @@ last_modified_at: 2023-06-06T12:06:00+09:00
 
 aws cli들은 infra 구축의 자동화를 위해 자주 쓰이는 interface 입니다.
 
-예시를 통해 자주 쓰이는 aws cli 및 option 사용 방법들을 정리해보았습니다.
+aws cli 및 option 사용 방법들을 정리해보았습니다.
 
 # Tutorial
 ## [ec2] describe-instances
@@ -42,9 +42,8 @@ aws ec2 describe-instances
 
 - `instance-id` - The ID of the instance
 - `instance-state-name` - The state of the instance 
-- `tag:<key>` - The key/value combination of a tag assigned to the resource. Use the tag key in the filter name and the tag value as the filter value. 
+- `tag:<key>` - Use the tag key in the filter name and the tag value as the filter value. 
 - (structure)
-    - operation대로 좀더 구체적인 result를 내는 방식입니다.
     - Name → (string)
         - The name of the filter. Filter names are case-sensitive.
     - Values -> (list)
@@ -70,7 +69,7 @@ aws ec2 describe-instances
 The following `describe-instances` example describes the specified instance.
 
 ```bash
-aws ec2 describe-instances --instance-ids i-088fdb5b7601cfe82
+aws ec2 describe-instances --instance-ids i-0123456789
 ```
 
 Output:
@@ -97,7 +96,7 @@ The following `describe-instances` example uses filters to scope the results t
 
 ```bash
 aws ec2 describe-instances \
-    --filters Name=instance-type,Values=t2.xlarge && Name=key-name,Values=sb-ai-team-pem-admin
+    --filters Name=instance-type,Values=t2.xlarge && Name=key-name,Values=my-pem-key
 ```
 
 **Example 3: To filter for instances with the specified name tag** 
@@ -106,7 +105,7 @@ The following `describe-instances` example uses name tag filters to scope the 
 
 ```bash
 aws ec2 describe-instances \
-    --filters Name=tag:Name,Values=K8s-mng-system-v2
+    --filters Name=tag:Name,Values=my-prod-server
 ```
 
 **Example 4: To filter for instances with the specified response columns**
@@ -156,6 +155,23 @@ Output
 +----------------------+---------------------+
 ```
 
+## [ec2] create-instances
+
+### **Synopsis**
+
+```bash
+aws ec2 create-instances
+[--filters <value>]
+[--instance-ids <value>]
+[--output <value>]
+[--query <value>]
+[--region <value>]
+...
+```
+
+
 # References
-- **aws cli documents**
+- **AWS cli documents**
     - [https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-instances.html](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-instances.html)
+- **JMSEPath query tutorial**
+    - [https://jmespath.org/tutorial.html](https://jmespath.org/tutorial.html)
