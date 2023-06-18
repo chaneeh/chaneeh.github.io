@@ -57,7 +57,7 @@ service에는 aws redshift, google bigquery가 있고, commercial에는 hp verti
 
 ### User-centric computational model in Nova
 
-우리는 Nova를 user centric한 개념을 기반으로 한 실시간 map-reduce를 지원하는 분산형 columnar storage 입니다. 상기해보자면, 쿼리 유연성은 매우 중요한 feature이고, map-reduce는 많은 type의 연산을 지원하는 generic한 framework 입니다.
+Nova는 user centric한 개념을 기반으로 한 실시간 map-reduce를 지원하는 분산형 columnar storage 입니다. 앞서말했듯이, 쿼리 유연성은 매우 중요한 feature이고, map-reduce는 많은 type의 연산을 지원하는 generic한 framework 입니다.
 
 행동 분석은 일반적으로 유저별로 관련된 모든 이벤트들을 한번에 봅니다. 이를 위해서 분산 시스템에서는 유저들의 분산된 join이 중요하고, 그 말인 즉슨 user들 기반으로 paritioning되어서 data moving이 최소화 되어야한다는 뜻입니다. 그렇게 됨으로써 독립적인 워커들로부터 distinct한 user set들 연산이 병렬적으로 이루어질수 있습니다.
 
