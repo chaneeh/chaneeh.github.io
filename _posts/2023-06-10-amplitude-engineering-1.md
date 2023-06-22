@@ -1,6 +1,6 @@
 ---
-title:   "Amplitude engineering blog 정리 - 1"
-excerpt: "Amplitude engineering blog 정리 - 1"
+title:   "[Amplitude engineering 번역] - Optimizing Redshift Performance with Dynamic Schemas"
+excerpt: "[Amplitude engineering 번역] - Optimizing Redshift Performance with Dynamic Schemas"
 toc: true
 toc_sticky: true
 

@@ -1,6 +1,6 @@
 ---
-title:   "Amplitude engineering blog 정리 - 3"
-excerpt: "Amplitude engineering blog 정리 - 3"
+title:   "[Amplitude engineering 번역] - Nova: The Architecture for Understanding User Behavior"
+excerpt: "[Amplitude engineering 번역] - Nova: The Architecture for Understanding User Behavior"
 toc: true
 toc_sticky: true
 

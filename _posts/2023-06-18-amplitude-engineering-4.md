@@ -1,6 +1,6 @@
 ---
-title:   "Amplitude engineering blog 정리 - 4"
-excerpt: "Amplitude engineering blog 정리 - 4"
+title:   "[Amplitude engineering 번역] - Nova 2.0 : Re-architecting the Analytics Engine behind Amplitude"
+excerpt: "[Amplitude engineering 번역] - Nova 2.0 : Re-architecting the Analytics Engine behind Amplitude"
 toc: true
 toc_sticky: true
 

@@ -1,6 +1,6 @@
 ---
-title:   "Amplitude engineering blog 정리 - 2"
-excerpt: "Amplitude engineering blog 정리 - 2"
+title:   "[Amplitude engineering 번역] - Scaling Analytics at Amplitude"
+excerpt: "[Amplitude engineering 번역] - Scaling Analytics at Amplitude"
 toc: true
 toc_sticky: true
 
