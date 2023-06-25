@@ -1,6 +1,6 @@
 ---
-title:   "[eks + airflow] - cluster-provisioning"
-excerpt: "[eks + airflow] - cluster-provisioning"
+title:   "[EKS + Airflow] - cluster-provisioning"
+excerpt: "[EKS + Airflow] - cluster-provisioning"
 toc: true
 toc_sticky: true
 

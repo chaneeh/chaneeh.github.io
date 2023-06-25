@@ -1,6 +1,6 @@
 ---
-title:   "[eks + airflow] - auto-scaling"
-excerpt: "[eks + airflow] - auto-scaling"
+title:   "[EKS + Airflow] - auto-scaling"
+excerpt: "[EKS + Airflow] - auto-scaling"
 toc: true
 toc_sticky: true
 
