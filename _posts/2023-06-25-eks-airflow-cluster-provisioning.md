@@ -111,7 +111,7 @@ mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$P
 echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
 
 # After you install kubectl, you can verify its version
-kubectl version --short --client # Client Version: v1.25.7-eks-0a21954
+kubectl version --short --client # Client Version: v1.25.7
 ```
 
 **cli completion option**

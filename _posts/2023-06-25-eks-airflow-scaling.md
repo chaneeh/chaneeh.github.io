@@ -121,7 +121,7 @@ kubectl patch deployment cluster-autoscaler \
 
 ```
 
-cluster name 및 container의 command에 몇가지 수정사항을 반영해서 다시 patch를 진행합니다.
+cluster name 및 container의 command에 `--balance-similar-node-groups` 와 `--skip-nodes-with-system-pods` 수정사항을 반영해서 다시 patch를 진행합니다.
 이후 image 버전도 최신버전으로 바꾸어 줍니다.
 
 ```bash
