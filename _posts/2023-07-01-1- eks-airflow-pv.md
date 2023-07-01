@@ -14,7 +14,8 @@ last_modified_at: 2023-07-01T12:06:00+09:00
 ---
 # Background
 
-provisioning된 eks cluster 에 persistentvolumn을 설정해보도록 하겠습니다.
+eks cluster에 airflow celery worker들이 작업을 수행하면서 asg및 hpa(keda) scaling을 통해 자주 binding 되고 delete될것입니다. 또한 이후 task가 증가함에 따라 worker의 갯수도 유동적으로 변할텐데요, 이러한 상황에서 worker pod의 log를 수집하기 위해 다중 읽기 쓰기가 지원되고 동적으로 provisioning이 되며 multi az에서 파일 시스템이 지원되는 persistentvolumn이 필요합니다.
+
 `aws-ebs` 를 사용하게 된다면 multi AZ에 위치한 airflow worker pod들이 스토리지에 접근할수 없기 때문에 `aws-efs`  프로비저너를 사용한 storage-class를 이용해 동적으로 pv를 구성해보겠습니다.
 
 # Contents
@@ -30,7 +31,7 @@ provisioning된 eks cluster 에 persistentvolumn을 설정해보도록 하겠습
 각 가용영역별로 mount target을 만들어서 진입점을 생성합니다.
 multi 가용영역에 provisioning된 pod들이 read & write 할수 있도록 efs를 사용합니다.
 
-### 1)  **IAM policy and role**
+### 1)  Binding IAM policy and role
 
 ---
 
@@ -92,7 +93,7 @@ aws iam attach-role-policy \
   --role-name AmazonEKS_EFS_CSI_DriverRole
 ```
 
-### 2) AWS EFS driver
+### 2) Creating AWS EFS driver
 
 ---
 
@@ -119,7 +120,7 @@ aws efs csi driver를 배포하기 위해 변경된 매니페스트를 적용하
 kubectl apply -f ~/pv_installation/efs_csi/public-ecr-driver.yaml
 ```
 
-### 3) EFS File System
+### 3) EFS File System mount target
 
 ---
 
@@ -158,7 +159,7 @@ do
 done
 ```
 
-### 4) Storage class
+### 4) Storage class Manifest file
 
 ---
 

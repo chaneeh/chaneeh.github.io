@@ -14,7 +14,10 @@ last_modified_at: 2023-06-18T12:06:00+09:00
 
 # Background
 
-지난 amplitude wave에 이어서 3편으로는 다음 분석 엔진인 nova에 대해 설명한 글을 정리해보겠습니다.
+지난 amplitude wave에 이어서 다음 분석 엔진인 nova 개발기를 정리해보겠습니다.
+
+기본 분석 엔진인 wave에서 분석 유연성을 확보하기위해 raw data를 colmun base로 적재하고 shuffle을 최소화 하기위해 유저들 기반으로 partitioning을 진행하였습니다.
+그리고 lambda 아키텍쳐를 통해 분석 집계에 최적화된 columnar format으로 변환하고 있습니다.
 
 original post 글 주소입니다.
 

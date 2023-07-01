@@ -17,7 +17,7 @@ last_modified_at: 2023-06-25T12:06:00+09:00
 
 eks에 airflow를 리소스 효율적으로 관리하기 위해서는 크게 pod scaling 및 node scaling이 필요합니다. 
 
-이번 포스트는 pod와 node를 scaling 하기 위해서 keda와 k8s cluster autoscaler를 사용해보겠습니다.
+이번 포스트는 pod와 node를 scaling 하기 위해서 keda와 k8s cluster autoscaler를 사용해보겠습니다. keda는 event based hpa이기 때문에 여러 event plugin을 통해 더 빠르게 pod를 scale out 할수 있습니다. 또한 clusteer autoscaler도 여러 관련된 opensource들이 나와 이후 분석해보면 좋을것 같습니다.
 
 # Contents
 

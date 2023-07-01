@@ -14,14 +14,16 @@ last_modified_at: 2023-07-01T12:06:00+09:00
 ---
 # Background
 
-지난시간까지 autoscaling 설정 및 efs provisioner가 지정된 storageclass를 구성하였습니다.
-이번 시간에는 eks cluster에 helm을 이용해서 airflow를 설치해보겠습니다.
+지난시간까지 autoscaling 설정 및 efs provisioner가 지정된 storageclass를 구성하였습니다. 지금까지 생성한 scaling, volumn 리소스들을 기반으로 
+이번 시간에는 eks cluster에 helm chart 을 이용해서 airflow를 설치해보겠습니다.
+
+aws ecosystem위헤서 구축했기에 관리 point 증가보다는 task의 빠른 실행이 더 우선순위가 되어 celeryexecutor로 설정하였고, scaling option으로 keda 및 cluster autoscaler를 선택하였습니다. 그리고 볼륨 resource은 efs storage class를 사용하여 동적으로 provisioning 하였습니다.
 
 # Contents
 
 ## Preparation
 
-airflow helm chart에서 사용할 secret resource들을 생성해줍시다.
+airflow helm chart에서 사용할 secret resource들을 생성해줍시다. 우선 airflow에서 metadata storage로 사용할 db를 aws rds로 생성할것이고, 이후 dag를 git sync sidecar 패턴으로 관리하기 위해 secret value들을 생성할것입니다.
 
 ### External database for airflow metastore
 
