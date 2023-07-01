@@ -42,8 +42,8 @@ cluster autoscaler(ca)은 unscheduled 된 pod가 있을때 ca가 aws asg을 통�
 script 내 variable들 설정합니다.
 
 ```bash
-prod_cluster_name="dev-k8s-demo-v3"
-account_id="343647978193"
+prod_cluster_name="k8s-cluster"
+account_id="123456789"
 ```
 
 asg를 설정변경할수 있는 policy를 생성하고 해당 policy 권한이 부여된 k8s service account를 생성합니다.
