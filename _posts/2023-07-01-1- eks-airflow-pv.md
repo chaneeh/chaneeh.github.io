@@ -25,11 +25,10 @@ provisioning된 eks cluster 에 persistentvolumn을 설정해보도록 하겠습
 
 **persistentvolumn** 이란 k8s pod의 생명주기와 독립적으로 데이터를 저장할수 있는 클러스터 스토리지입니다.
 
-**efs**란 서버리스 파일 스토리지 제공 서비스입니다. 용량 및 성능을 프로비저닝하지 않거나 관리하지 않고도 파일데이터를 공유할수 있습니다. 여러 서버 및 컴퓨팅 인스턴스에 대한 공통 데이터 소스가 될수 있습니다. 각 가용영역별로 mount target을 만들어서 진입점을 생성합니다.
+**efs**란 서버리스 파일 스토리지 제공 서비스입니다. 용량 및 성능을 프로비저닝하지 않거나 관리하지 않고도 파일데이터를 공유할수 있습니다. 여러 서버 및 컴퓨팅 인스턴스에 대한 공통 데이터 소스가 될수 있습니다. 
 
-**efs vs ebs 차이점**
-
-multi 가용영역에 provisioning된 pod들이 read & write 할수 있습니다. 
+각 가용영역별로 mount target을 만들어서 진입점을 생성합니다.
+multi 가용영역에 provisioning된 pod들이 read & write 할수 있도록 efs를 사용합니다.
 
 ### 1)  **IAM policy and role**
 
