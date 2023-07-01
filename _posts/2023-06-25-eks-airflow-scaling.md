@@ -1,16 +1,16 @@
 ---
-title:   "[EKS + Airflow] - auto-scaling"
-excerpt: "[EKS + Airflow] - auto-scaling"
+title:   "[EKS + Airflow] - Auto Scaling"
+excerpt: "[EKS + Airflow] - Auto-Scaling"
 toc: true
 toc_sticky: true
 
 categories:
   - Blog
 tags:
-  - Blog
   - eks
   - airflow
-  - TOC
+  - KEDA
+  - ASG
 last_modified_at: 2023-06-25T12:06:00+09:00
 ---
 # Background

@@ -1,16 +1,14 @@
 ---
-title:   "[EKS + Airflow] - cluster-provisioning"
-excerpt: "[EKS + Airflow] - cluster-provisioning"
+title:   "[EKS + Airflow] - Cluster Provisioning"
+excerpt: "[EKS + Airflow] - Cluster Provisioning"
 toc: true
 toc_sticky: true
 
 categories:
   - Blog
 tags:
-  - Blog
   - eks
   - airflow
-  - TOC
 last_modified_at: 2023-06-25T12:06:00+09:00
 ---
 # Background
