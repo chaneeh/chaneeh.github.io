@@ -211,7 +211,7 @@ workers:
 `ScaledObject`의 `trigger` 를  보면 airflow db에 접속해서 `running` 또는 `queued` 된 task의 갯수를 `celery.worker_concurrency`로 나누어서 worker가 다 실행할수 있도록 worker 개수를 조절하고 있습니다.
 
 ```sql
-SELECT ceil(COUNT(*)::decimal / {{ .Values.config.celery.worker_concurrency }})
+SELECT ceil(COUNT(*)::decimal / {.Values.config.celery.worker_concurrency})
 FROM task_instance
 WHERE (state='running' OR state='queued')
 {- if eq .Values.executor "CeleryKubernetesExecutor" }
