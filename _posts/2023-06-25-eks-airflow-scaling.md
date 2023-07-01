@@ -43,7 +43,7 @@ script 내 variable들 설정합니다.
 
 ```bash
 prod_cluster_name="k8s-cluster"
-account_id="123456789"
+account_id="your account name"
 ```
 
 asg를 설정변경할수 있는 policy를 생성하고 해당 policy 권한이 부여된 k8s service account를 생성합니다.
