@@ -188,7 +188,7 @@ kubectl create -f ~/customize_yaml/efs-sc.yaml
 
 이후 airflow helm chart에서 pvc를 생성하면 `efs-sc` 라는 storage-class를 이용해 pv를 동적으로 생성할 것입니다.
 
-# Reference
+## Reference
 
 ---
 

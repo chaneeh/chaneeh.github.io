@@ -9,7 +9,6 @@ categories:
 tags:
   - Blog
   - Amplitude
-  - TOC
 last_modified_at: 2023-06-18T12:06:00+09:00
 ---
 
