@@ -199,7 +199,7 @@ triggers:
 
 ```yaml
 # template/workers/worker-deployment.yaml 참고
-kind: {{ if $persistence }}StatefulSet{{ else }}Deployment{{ end }}
+kind: { if $persistence } StatefulSet { else } Deployment { end }
 ```
 
 **postgresql**
@@ -260,3 +260,29 @@ webserver의 service type을 loadbalancer로 설정하고 유저 계정을 생�
 `triggerer`, `scheduler`, `redis`, `statsd`, `migrateDatabasejob`, `createUserjob` 등등
 
 다른 component들도 resource를 명시적으로 적어줍니다.
+
+
+## Install airflow via helm charts
+
+### install & update
+
+---
+
+airflow를 설치할 namespace를 생성해줍니다.
+```bash
+kubectl create namespace airflow
+```
+
+위에서 생성한 `prod_airflow_values.yaml` 파일을 통해 `airflow` 를 설치해 줍시다
+```bash
+helm install my-release apache-airflow/airflow \
+  --namespace airflow \
+  -f ~/airflow_helm_chart/prod_airflow_values.yaml
+```
+
+이후 변동 사항이 있다면 `prod_airflow_values.yaml` 파일을 수정후 `helm upgrade` 를 통해 재배포하면 됩니다.
+```bash
+helm upgrade my-release apache-airflow/airflow \
+  --namespace airflow \
+  -f ~/airflow_helm_chart/prod_airflow_values.yaml
+```
