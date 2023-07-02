@@ -14,7 +14,7 @@ last_modified_at: 2023-07-01T12:06:00+09:00
 ---
 # Background
 
-eks cluster에 airflow celery worker들이 작업을 수행하면서 asg및 hpa(keda) scaling을 통해 자주 binding 되고 delete될것입니다. 또한 이후 task가 증가함에 따라 worker의 갯수도 유동적으로 변할텐데요, 이러한 상황에서 worker pod의 log를 수집하기 위해 다중 읽기 쓰기가 지원되고 동적으로 provisioning이 되며 multi az에서 파일 시스템이 지원되는 persistentvolumn이 필요합니다.
+eks cluster에 airflow celery worker pod들이 작업을 수행하면서 asg및 hpa(keda) scaling을 통해 자주 binding 되고 delete될것입니다. 또한 이후 task가 증가함에 따라 worker의 갯수도 유동적으로 변할텐데요, 이러한 상황에서 worker pod의 log를 수집하기 위해 다중 읽기 쓰기가 지원되고 동적으로 provisioning이 되며 multi az에서 파일 시스템이 지원되는 persistentvolumn이 필요합니다.
 
 `aws-ebs` 를 사용하게 된다면 multi AZ에 위치한 airflow worker pod들이 스토리지에 접근할수 없기 때문에 `aws-efs`  프로비저너를 사용한 storage-class를 이용해 동적으로 pv를 구성해보겠습니다.
 
