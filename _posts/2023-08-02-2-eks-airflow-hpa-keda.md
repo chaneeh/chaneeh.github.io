@@ -62,7 +62,7 @@ dag 한개당 worker replicaset 1개를 5분동안 cpu 400m을 사용합니다.
 
 **`airflow webserver`**
 
-![1.png](../img/eks-airflow-hpa-keda/1.png)
+![1.png](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-hpa-keda/1.png)
 
 **`watch kubectl top pods -n airflow`**
 
@@ -109,11 +109,11 @@ grafana를 사용해서 worker pod의 갯수와 airflow의 running task 갯수�
 
 `**worker_replicaset_number**`
 
-![2.png](../img/eks-airflow-hpa-keda/2.png)
+![2.png](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-hpa-keda/2.png)
 
 `**airflow_pool_running_slots_default_pool**`
 
-![3.png](../img/eks-airflow-hpa-keda/3.png)
+![3.png](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-hpa-keda/3.png)
 
 
 일단 `worker_replicaset_number` 가 계단식으로 증가하고 capacity가 증가함에 따라 `running_slots` 갯수도 같이 증가하는것을 확인할수 있습니다. 이제 앞서 말했던 기준인 task의 시작/종료 시점과 최적 worker 자원 측면해서 분석해보도록 하겠습니다.
@@ -227,12 +227,12 @@ spec:
 
 `**worker_replicaset_number**`
 
-![4.png](../img/eks-airflow-hpa-keda/4.png)
+![4.png](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-hpa-keda/4.png)
 
 
 `**airflow_pool_running_slots_default_pool**`
 
-![5.png](../img/eks-airflow-hpa-keda/5.png)
+![5.png](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-hpa-keda/5.png)
 
 hpa와는 다르게 keda는 각 기준에 잘 충족되는지 확인해봅시다.
 
