@@ -28,7 +28,7 @@ karpenter는 ca와 마찬가지로 스케쥴링 되지 못한 pod가 있을때 �
 spot instance capacity type을 사용하면 price-capacity-optimized allocation strategy를 사용하여 node-interruption이 적은 node type중에 lowest price node를 선택  합니다.
 on-demand capacity type일때는 기본적으로 capacity가 보장이 되기때문에 가격이 제일 적게드는 lowest price allocation strategy를 사용합니다.
 
-![1.png](../img/eks-airflow-ca-karpenter/1.png)
+![1.png](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-ca-karpenter/1.png)
 
 # Contents
 
