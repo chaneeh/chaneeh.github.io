@@ -80,10 +80,7 @@ horizontal pod scaling 설정후 각 정시마다 worker pod가 증가함에 따
 
 ![node-resource](..post_images/eks-airflow-monitering-server-metric/node-resource.jpg)
 
-각 worker container별  memory 사용량입니다.
-task 실행시 limit resource 였던 600Mi가 초과되자 pod가 evicted 되고 다시 생성된것을 볼수 있다.
-
-memory를 600Mi ⇒ 800Mi 로 늘려봅시다.
+각 worker container별  memory 사용량입니다. worker pod가 task 실행시 limit resource가 초과되자 pod가 evicted 되고 다시 생성되는 경우 입니다.
 
 pod 이름을 my-release-worker를 포함한것으로 filtering 하고 싶을 경우 label filtering에 
 `pod =~ ".*my-release-worker.*"` 로 하면됩니다.
