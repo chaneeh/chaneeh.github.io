@@ -68,7 +68,7 @@ helm install grafana grafana/grafana \
 
 **`node_memory_MemAvailable_bytes`**
 
-![node-resource](../img/eks-airflow-monitering-server-metric/node-resource.png)
+![node-resource](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-monitering-server-metric/airflow-slots.png)
 
 horizontal pod scaling 설정후 각 정시마다 worker pod가 증가함에 따라 node의 memory가 줄어드는것을 확인할수 있습니다.
 
