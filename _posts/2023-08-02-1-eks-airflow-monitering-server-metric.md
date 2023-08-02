@@ -1,6 +1,6 @@
 ---
-title:   "[EKS + Airflow] - monitering server metric"
-excerpt: "[EKS + Airflow] - monitering server metric"
+title:   "[EKS + Airflow] - Monitering server metric"
+excerpt: "[EKS + Airflow] - Monitering server metric"
 toc: true
 toc_sticky: true
 
@@ -68,7 +68,7 @@ helm install grafana grafana/grafana \
 
 **`node_memory_MemAvailable_bytes`**
 
-![node-resource](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-monitering-server-metric/airflow-slots.png)
+![node-resource](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-monitering-server-metric/node-resource.png)
 
 horizontal pod scaling 설정후 각 정시마다 worker pod가 증가함에 따라 node의 memory가 줄어드는것을 확인할수 있습니다.
 
@@ -78,7 +78,7 @@ horizontal pod scaling 설정후 각 정시마다 worker pod가 증가함에 따
 
 **`container_memory_usage_bytes`**
 
-![container-resource](../img/eks-airflow-monitering-server-metric/container-resource.png)
+![container-resource](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-monitering-server-metric/container-resource.png)
 
 각 worker container별  memory 사용량입니다. worker pod가 task 실행시 limit resource가 초과되자 pod가 evicted 되고 다시 생성되는 경우 입니다.
 
@@ -97,7 +97,7 @@ container_memory_usage_bytes{pod=~".*my-release-worker.*"}
 
 **`airflow_pool_running_slots_default_pool`**
 
-![airflow_running_slots](../img/eks-airflow-monitering-server-metric/airflow-slots.png)
+![airflow_running_slots](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-monitering-server-metric/airflow-slots.png)
 
 각 시간별 airflow에서 실행중인 slots의 갯수입니다.
 
@@ -113,7 +113,7 @@ airflow_pool_running_slots_default_pool
 
 **`kube_deployment_status_replicas_ready`**
 
-![worker-deployment](../img/eks-airflow-monitering-server-metric/worker-deployment.png)
+![worker-deployment](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-monitering-server-metric/worker-deployment.png)
 
 celery worker들의 replicaset number를 측정한것입니다. 매 정시마다 pod가 scaling out 된것을 확인하실수 있습니다.
 
