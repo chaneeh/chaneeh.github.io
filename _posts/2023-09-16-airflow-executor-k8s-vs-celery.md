@@ -1,6 +1,6 @@
 ---
-title:   "[Airflow] - Airflow executor comparison"
-excerpt: "[Airflow] - Airflow executor comparison"
+title:   "[Airflow] - Airflow Executor comparison"
+excerpt: "[Airflow] - Airflow Executor comparison"
 toc: true
 toc_sticky: true
 
