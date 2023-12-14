@@ -1,6 +1,6 @@
 ---
-title:   "[EKS + Airflow] - Airflow w. Helm chart"
-excerpt: "[EKS + Airflow] - Airflow w. Helm chart"
+title:   "[EKS + Airflow] - Airflow 설치하기 (w. Helm chart)"
+excerpt: "[EKS + Airflow] - Airflow 설치하기 (w. Helm chart)"
 toc: true
 toc_sticky: true
 
