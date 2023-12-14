@@ -1,6 +1,6 @@
 ---
-title:   "Data compression format - [Saving geo data storage cost by 90%]"
-excerpt: "Data compression format - [Saving geo-data storage cost by 90%]"
+title:   "Reduce geo-data s3 cost by 90% (w. data storage format)"
+excerpt: "Reduce geo-data s3 cost by 90% (w. data storage format)"
 toc: true
 toc_sticky: true
 
@@ -14,9 +14,9 @@ last_modified_at: 2023-12-03T:12:30+09:00
 
 # Motivation
 
-경로 서비스 backend를 설계/구축하면서 추천 과정을 tracking 하기위해 주요한 의사결정 데이터들을 로깅하였고 한번의 추천을 받는 과정에서(특히 장거리 추천일때) 수천개의 위경도 데이터가 쌓였습니다. 
+경로 서비스 backend를 설계/구축하면서 추천 과정을 tracking 하기위해 주요한 의사결정 데이터들을 로깅하였고 장거리 추천의 경우 한번의 추천을 받는 과정에서 수천개의 위경도 데이터가 쌓였습니다. 
 
-유저수 증가 및 MLOPS의 확장에 따라 위경도 데이터가 증가할수록 storage volumn을 줄이는 방법을 고민하게 되었고, compression format 및 데이터 도메인 특성을 이용하여 90% 이상 storage cost를 줄인 방법을 공유하고자 합니다.
+유저수 증가 및 MLOPS의 확장에 따라 위경도 데이터가 가파르게 증가하여 storage volumn을 줄이는 방법을 고민하게 되었고, compression format 및 데이터 도메인 특성을 이용하여 90% 이상 storage cost를 줄인 방법을 공유하고자 합니다.
 
 # Contents
 
@@ -24,7 +24,7 @@ last_modified_at: 2023-12-03T:12:30+09:00
 
 table metadata로 glue를 이용하고 있고, glue에는 `gzip`, `snappy`, `zstd`, `lzo`와 같은 compression option들을 지원하고 있습니다.
 
-일반적으로 compression format을 선택할때는 compression ratio와 read/write speed 간의 trade off 가 존재하기 때문에 use-case에 맞는 option을 선택하여야 합니다. `snappy` 는 compression ratio 보다는 read / write speed가 빠르기 때문에 자주 조회되는 hot data에 많이 이용되고, `gzip`은 write시 많은 리소스를 사용하여 `snappy`보다 더 높은 compression ratio를 가지고 있는 만큼 saving cost가 중요한 cold data에 이용됩니다. 또한 `zstd` 는 상당히 높은 compression ratio를 가지면서도 write/read시 준수한 속도를 유지합니다.
+일반적으로 compression format을 선택할때는 compression ratio와 read/write speed 간의 trade off 가 존재하기 때문에 use-case에 맞는 option을 선택하여야 합니다. `snappy` 는 compression ratio 보다는 read / write speed가 빠르기 때문에 자주 조회되는 hot data에 많이 이용되고, `gzip`은 write시 많은 리소스를 사용하여 `snappy`보다 더 높은 compression ratio를 가지고 있는 만큼 saving cost가 중요한 cold data에 이용됩니다. 또한 `zstd` 는 상당히 높은 compression ratio를 가지면서도 write/read시 준수한 속도를 유지하기 때문에 범용적으로 많이 사용됩니다.
 
 추천과정에서 발생한 위경도 데이터 특성에 맞게 관리/저장 필요성 느꼈기에 compression format별 file size를 비교해보았습니다.
 

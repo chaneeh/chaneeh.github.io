@@ -1,6 +1,6 @@
 ---
-title:   "[EKS + Airflow] - CA vs KARPENTER"
-excerpt: "[EKS + Airflow] - CA vs KARPENTER"
+title:   "[EKS + Airflow] - CA vs KARPENTER 비교하기"
+excerpt: "[EKS + Airflow] - CA vs KARPENTER 비교하기"
 toc: true
 toc_sticky: true
 

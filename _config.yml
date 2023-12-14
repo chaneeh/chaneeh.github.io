@@ -106,7 +106,7 @@ analytics:
 author:
   name             : "멋있게 성장중인 개발자"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am a **growing** person.  \n  I am an **amazing** person."
+  bio              : "I like **Data engineering and MLOPS**."
   location         : "South Korea"
   email            :
   links:

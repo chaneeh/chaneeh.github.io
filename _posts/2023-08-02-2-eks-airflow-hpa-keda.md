@@ -1,6 +1,6 @@
 ---
-title:   "[EKS + Airflow] - HPA vs KEDA"
-excerpt: "[EKS + Airflow] - HPA vs KEDA"
+title:   "[EKS + Airflow] - HPA vs KEDA 비교하기"
+excerpt: "[EKS + Airflow] - HPA vs KEDA 비교하기"
 toc: true
 toc_sticky: true
 
