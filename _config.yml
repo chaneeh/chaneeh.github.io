@@ -104,7 +104,7 @@ analytics:
 
 # Site Author
 author:
-  name             : "후추빵"
+  name             : "후추빵 좋아하는 개발자"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "I like **Data engineering** and **MLOPS**."
   location         : "South Korea"

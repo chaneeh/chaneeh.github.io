@@ -1,6 +1,6 @@
 ---
-title:   "[Data storage format] - Parquet vs ORC"
-excerpt: "[Data storage format] - Parquet vs ORC"
+title:   "[Data storage format] - Parquet vs ORC 비교하기"
+excerpt: "[Data storage format] - Parquet vs ORC 비교하기"
 toc: true
 toc_sticky: true
 

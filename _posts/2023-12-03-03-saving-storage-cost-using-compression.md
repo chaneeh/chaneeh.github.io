@@ -1,6 +1,6 @@
 ---
-title:   "Reduce geo-data s3 cost by 90% (w. data storage format)"
-excerpt: "Reduce geo-data s3 cost by 90% (w. data storage format)"
+title:   "위경도 데이터 s3 cost 90% 줄이기 (w. data storage format)"
+excerpt: "위경도 데이터 s3 cost 90% 줄이기 (w. data storage format)"
 toc: true
 toc_sticky: true
 
