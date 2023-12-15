@@ -36,7 +36,7 @@ compression을 적용만 해도 uncompressed 된 table 보다 50%이상 size가 
 
 경로 위치 데이터에서 발견한 또다른 특성은, 동일한/유사한 값이 많이 존재한다는것이었습니다. 예를들어 A란 유저와 B란 유저가 서울 지역에서 동쪽 관광지(ex: 강원도) 경로를 추천받았을 경우, 대한민국의 고속도로 특성상 공통된 고속도로 (**`하남IC` →`춘천IC`**)를 지나야하고, 이경우 A와 B유저의 위경도 데이터에 구간별로 동일/유사한 point들이 많이 분포하게 됩니다. 더욱이 장거리일수록 고속도로 또는 자동차전용도로의 비율이 높아지기 때문에 유사한 비율이 올라갑니다.
 
-이처럼 유사한 위경도값끼리 묶고 compression을 진행한다면 압축률이 더 올라가고, compression format에 따라서도 세부적인 압축률이 달라집니다. `snappy`, `gzip`과 `zstd` compression format에 sorting까지 적용하였을때 size reduction을 같이 보시죠.
+이와같이 데이터 유사도가 높을때 유사한 위경도값끼리 묶고 compression을 진행한다면 압축률이 더 올라가고, compression format에 따라서도 세부적인 압축률이 달라집니다. `snappy`, `gzip`과 `zstd` compression format에 유사도를 높이기 위한 sorting까지 적용하였을때 size reduction을 같이 보시죠.
 
 ![reduce-storage-cost-format-sorting-comparison-2.png](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/file-format-reduce-storage-cost/reduce-storage-cost-format-sorting-comparison-2.png)
 
