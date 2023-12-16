@@ -22,7 +22,7 @@ last_modified_at: 2023-12-03T:12:30+09:00
 
 ## Compression format
 
-table metadata로 glue를 이용하고 있고, glue에는 `gzip`, `snappy`, `zstd`, `lzo`와 같은 compression option들을 지원하고 있습니다.
+table metadata로 aws glue data catalog를 이용하고 있고, parquet 내부의 compression format으로 `gzip`, `snappy`, `zstd`, `lzo`들을 지원하고 있습니다.
 
 일반적으로 compression format을 선택할때는 compression ratio와 read/write speed 간의 trade off 가 존재하기 때문에 use-case에 맞는 option을 선택하여야 합니다. `snappy` 는 compression ratio 보다는 read / write speed가 빠르기 때문에 자주 조회되는 hot data에 많이 이용되고, `gzip`은 write시 많은 리소스를 사용하여 `snappy`보다 더 높은 compression ratio를 가지고 있는 만큼 saving cost가 중요한 cold data에 이용됩니다. 또한 `zstd` 는 상당히 높은 compression ratio를 가지면서도 write/read시 준수한 속도를 유지하기 때문에 범용적으로 많이 사용됩니다.
 
