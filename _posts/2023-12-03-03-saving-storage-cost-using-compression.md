@@ -40,9 +40,9 @@ compression을 적용만 해도 uncompressed 된 table 보다 50%이상 size가 
 
 ![reduce-storage-cost-format-sorting-comparison-2.png](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/file-format-reduce-storage-cost/reduce-storage-cost-format-sorting-comparison-2.png)
 
-모든 compression format에 대해서 sorting이후 압축 진행시 compression ratio가 증가하는것을 보실수 있는데요, 이는 같거나 유사한 데이터별로 sorting해서 저장할경우 **parquet의 encoding 최소 단위인 page내에서 데이터의 유사도가 증가하기 때문에 압축 비율이 더 높아지기 때문입니다**.
+모든 compression format에 대해서 sorting이후 압축 진행시 compression ratio가 증가하는것을 보실수 있는데요, 이는 같거나 유사한 데이터별로 sorting해서 저장할경우 **parquet의 encoding 최소 단위인 page내에서 데이터의 유사도가 증가하며 압축 비율이 더 높아지기 때문입니다**.
 
-또한 compression format별로도 sorting + 압축에 따른 감소효과가 달랐는데요, `snappy`는 51.2%의 size 감소가 있었던 반면 `gzip`은 72%, 그리고 `zstd`는 80.9%의 compression 효과를 보이며 `zstd`가 가장 높은 압축률을 보여주었습니다. zstd의 경우 column내에서 반복해서 일어나는 값일경우 시작과 끝 지점으로 encoding이 진행되기 때문에 위경도의 복잡한 소숫점 값들을 효과적으로 줄일수 있습니다.
+또한 compression format별로도 sorting + 압축에 따른 감소효과가 달랐는데요, `snappy`는 51.2%의 size 감소가 있었던 반면 `gzip`은 72%, 그리고 `zstd`는 80.9%의 compression 효과를 보이며 `zstd`가 가장 높은 압축률을 보여주었습니다. zstd의 경우 column내에서 반복해서 일어나는 값일경우 해당 값의 시작과 끝 지점의 index로 encoding이 진행되기 때문에 위경도의 복잡한 소숫점 값들을 효과적으로 줄일수 있습니다.
 
 # Conclusion
 
