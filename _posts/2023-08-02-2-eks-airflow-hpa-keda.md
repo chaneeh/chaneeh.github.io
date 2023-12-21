@@ -15,7 +15,7 @@ last_modified_at: 2023-08-02T12:06:00+09:00
 
 # Background
 
-이번시간에는 airflow를 운영하면서 pod-scaling option으로 hpa 사용한 scaling 또는 keda component를 이용해서 event-driven한 scaling 이 좋을지 비교하는 시간을 가져보도록하겠습니다. 또한 keda를 사용할경우 airflow 운영환경에 맞는 scaling 지표는 무엇인지도 알아봅시다:)
+airflow를 eks에서 운영하면서 pod 및 node scaling에는 여러 option들이 있는데요, pod-scaling option으로 hpa scaling 또는 keda component를 이용한 event-driven scaling 이 좋을지 비교하는 시간을 가져보도록하겠습니다. 또한 keda를 사용할경우 airflow 운영환경에 맞는 scaling 지표는 무엇인지도 알아봅시다:)
 
 일단 k8s cluster를 운영하면서 pod autoscaling에 자주 사용되는  hpa와 keda를 간단히 정리해봅시다.
 
