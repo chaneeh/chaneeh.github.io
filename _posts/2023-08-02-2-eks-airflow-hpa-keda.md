@@ -15,6 +15,8 @@ last_modified_at: 2023-08-02T12:06:00+09:00
 
 # Background
 
+---
+
 airflow를 eks에서 운영하면서 pod 및 node scaling에는 여러 option들이 있는데요, pod-scaling option으로 hpa scaling 또는 keda component를 이용한 event-driven scaling 이 좋을지 비교하는 시간을 가져보도록하겠습니다. 또한 keda를 사용할경우 airflow 운영환경에 맞는 scaling 지표는 무엇인지도 알아봅시다:)
 
 일단 k8s cluster를 운영하면서 pod autoscaling에 자주 사용되는  hpa와 keda를 간단히 정리해봅시다.
@@ -25,53 +27,19 @@ keda(kubernetes event-driven autoscaling)도 워크로드 리소스들을 scalin
 
 # Contents
 
-실험을 위해 hpa, keda 각각dag가 trigger시 worker pod가 적정 갯수로 scale out 되기까지 과정을 비교해보겠습니다.
-
-dag 한개당 worker-pod 1개의 자원을 활용하도록 설정하였고 dag는 4개를 설정했기에, 동시실행을 위한 최적의 pod 갯수는 4개입니다.
-
-운영환경에서 pod-scaling 적합성 비교 기준은 크게 2가지로 선정하였습니다.
-- 빠른 scale out 으로 task들의 실행 시작 시간이 빠른가?
-- 적정 pod resource(4개)를 활용하는가?
-
-hpa의 scale out을 위해 worker pod의 평균 cpu 사용률을 **`80%`** 로 맞추었고 구체적인 환경세팅은 아래와 같습니다.
-
-### 비교 환경 세팅
-
 ---
 
-worker replicaset 1개당 cpu 500m 의 자원을 할당하였습니다.
+scaling option 별 scale out 과정을 관찰하기위해 다음과 같은 세팅을 하였습니다.
 
-`**prod_airflow_values.yaml**`
+hourly로 4개의 dag가 실행되고 각 dag는 2개의 task를 가져 병렬 처리시 최대 running slot의 갯수는 8개입니다. 
+또한 dag 한개당 celery worker 1개를 점유하고 cpu 80%를 5분동안 사용하기 때문에 최적화된 celery worker의 갯수는 4개입니다.
 
-```yaml
-executor: "CeleryExecutor"
-workers:
-  resources:
-    limits:
-      cpu: 500m 
-      memory: 800Mi 
-    requests:
-      cpu: 500m 
-      memory: 800Mi
-config:
-  celery:
-    worker_concurrency: 2
-```
+운영환경에서 worker pod scaling 적합성 비교 기준은 크게 2가지로 선정하였습니다.
+- 빠른 scale out 으로 task들의 실행 시작 시간이 빠른가?
+- 적정 worker pod resource(4개)를 활용하는가?
 
-dag 한개당 worker replicaset 1개를 5분동안 cpu 400m을 사용합니다.
+실험을 위해 hpa, keda 각각 scale out시 위 두 기준을 잘 만족하는지 확인해보겠습니다.
 
-**`airflow webserver`**
-
-![1.png](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-hpa-keda/1.png)
-
-**`watch kubectl top pods -n airflow`**
-
-```bash
-NAME                                    CPU(cores)   MEMORY(bytes)
-my-release-worker-77c58dd7fd-g8jwq      404m         288Mi
-```
-
-task 실행시  worker-pod의 평균 cpu 사용률은 대략 `**80%**`(`404m/500m`) 이 됩니다.
 
 ## HPA
 
@@ -105,7 +73,7 @@ kubectl get hpa -n airflow
 
 ---
 
-grafana를 사용해서 worker pod의 갯수와 airflow의 running task 갯수를 확인해보겠습니다.
+grafana를 사용해서 hourly로 dag가 trigger 될때 worker pod의 갯수와 airflow의 running task 갯수를 확인해보겠습니다.
 
 `**worker_replicaset_number**`
 
@@ -116,11 +84,11 @@ grafana를 사용해서 worker pod의 갯수와 airflow의 running task 갯수�
 ![3.png](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-hpa-keda/3.png)
 
 
-일단 `worker_replicaset_number` 가 계단식으로 증가하고 capacity가 증가함에 따라 `running_slots` 갯수도 같이 증가하는것을 확인할수 있습니다. 이제 앞서 말했던 기준인 task의 시작/종료 시점과 최적 worker 자원 측면해서 분석해보도록 하겠습니다.
+일단 `worker_replicaset_number` 가 계단식으로 증가하고 capacity가 증가함에 따라 `running_slots` 갯수도 같이 증가하는것을 확인할수 있습니다. 이제 앞서 말했던 기준인 task의 시작 시점과 최적 worker 자원 측면해서 분석해보도록 하겠습니다.
 
-[task 시작/종료시간] 일단 5분의 실행시간을 가진 dag 4개가 모두 실행완료 되는데 4분이 초과된 9분이 걸렸고, 이는 worker의 scale out이 최적의 갯수(4개)로 바로 확장되지 않았고 초반 4분동안 dag 갯수보다 적은 갯수를 target_replicaset_num로 산정했기 때문입니다.
+**[task 시작 시간]** running slot graph를 보았을때 리소스 부족으로 인해 마지막는 task는 4분이 지난 이후에 running state가 되었습니다. 이는 worker가 최적의 갯수(4개)로 바로 scale out이 되지 않고 hpa 로직에 따라 순차적으로 증가하였기 때문입니다.
 
-[resource 활용] dag 4개를 동시실행하는데 worker 갯수는 4개면 충분하지만 hpa는 2배인 8개 까지 scale out을 시켰습니다.
+**[resource 활용]** dag 4개를 동시실행하는데 worker 갯수는 4개면 충분하지만 hpa의 worker_replicaset_number 확인시 2배인 8개 까지 scale out을 시켰습니다.
 
 작동원리를 살펴보자면, hpa의 targetAverageUtilization가 cpu-percent로 지정되면 scaling 타겟 워크로드 리소스 내 조정되어야하는 pod들의  cpu-utilization 평균을 기반으로 worker 갯수를 산정하고 공식은 다음과 같습니다.
 
@@ -225,6 +193,9 @@ spec:
 
 ---
 
+keda 또한 grafana를 사용해서 worker pod scaling을 분석해보았습니다.
+
+
 `**worker_replicaset_number**`
 
 ![4.png](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-hpa-keda/4.png)
@@ -234,11 +205,10 @@ spec:
 
 ![5.png](https://raw.githubusercontent.com/chaneeh/chaneeh.github.io/master/img/eks-airflow-hpa-keda/5.png)
 
-hpa와는 다르게 keda는 각 기준에 잘 충족되는지 확인해봅시다.
 
-[task 시작/종료시간] 5분 실행시간 task가 모두 실행완료 되는데 6분이 걸렸고, 이는 worker의 scale out이 최적의 갯수로 빠르게 scale out이 되었기 때문입니다.
+**[task 시작 시간]** worker pod가 1분 이내로 빠르게 scale out이 되어 8개 task 모두 1분뒤 병렬처리 되는것을 확인할수 있습니다.
 
-[resource 활용] 최적의 replicaset number인 4개까지만 scale out을 하였습니다.
+**[resource 활용]** 최적의 replicaset number인 4개까지만 scale out을 하였습니다.
 
 두가지 기준모두 keda의 정확한 scaling 덕분에 hpa보다 더 나은 모습을 보여주었습니다.
 
@@ -281,13 +251,17 @@ Normal  SuccessfulRescale  17m   horizontal-pod-autoscaler  New size: 2; reason:
 Normal  SuccessfulRescale  16m   horizontal-pod-autoscaler  New size: 1; reason: All metrics below target
 ```
 
-## Conclusion
+# Conclusion
+
+---
 
 hpa와 keda를 각 기준별로 비교해보았고, task의 대기/실행시간 및 자원의 효율적 사용 측면에서 keda가 더 효율적인 모습을 보여준것을 확인할수 있었습니다. 이는 airflow의 내부 동작원리와 사용목적(scheduling)으로 인해, scaling의 target value를 worker의 resource 보다는 실행해야하는 task와 slot의 갯수를 통해 더 정확하고 빠르게 산정할수 있었기 때문입니다. 
 
 또한 이후 백엔드 infra 구축시 서비스의 구성요소, 목적에 따라 scaling metric 전략을 다르게 해야한다는것도 배울수 있었습니다.
 
-## Reference
+# Reference
+
+---
 
 **[k8s-docs : Horizontal Pod Autoscaling](https://kubernetes.io/ko/docs/tasks/run-application/horizontal-pod-autoscale/)**
 
