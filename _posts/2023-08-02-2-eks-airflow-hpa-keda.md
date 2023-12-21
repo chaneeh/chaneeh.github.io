@@ -15,9 +15,9 @@ last_modified_at: 2023-08-02T12:06:00+09:00
 
 # Background
 
-이번시간에는 airflow를 운영하면서 pod-scaling option으로 hpa 단독으로 운영하는게 좋을지, 아니면 keda component를 이용해서 event-driven하게 scaling 하는게 좋을지 비교해보는 시간을 가져보도록하겠습니다. 사실 airflow 공식 문서에서 keda 사용을 권장하고 있기 때문에 airflow가 event-driven한 scaling이 왜 권장되는지 알아보는 시간이라고도 볼수 있겠네요:)
+이번시간에는 airflow를 운영하면서 pod-scaling option으로 hpa 사용한 scaling 또는 keda component를 이용해서 event-driven한 scaling 이 좋을지 비교하는 시간을 가져보도록하겠습니다. 또한 keda를 사용할경우 airflow 운영환경에 맞는 scaling 지표는 무엇인지도 알아봅시다:)
 
-일단 k8s cluster를 운영하다보면 pod autoscaling에 자주 사용되는  hpa와 keda를 간단히 정리해봅시다.
+일단 k8s cluster를 운영하면서 pod autoscaling에 자주 사용되는  hpa와 keda를 간단히 정리해봅시다.
 
 hpa(horizontal-pod-autoscaling)는 deployment와 statefulset과 같은 워크로드 리소스를 수요에 맞게 자동으로 크기 조정을 하는 k8s object입니다. 쿠버네티스 api 자원 및 컨트롤러 형태로 구현되어있는데요, 컨트롤러는 평균 cpu 사용률, 메모리 사용률 등 관측된 메트릭들을 목표에 맞추기 위해 워크로드 리소스 크기를 조정합니다. 조정 알고리즘은 아래 contents에서 세부적으로 다루어 보겠습니다.
 
