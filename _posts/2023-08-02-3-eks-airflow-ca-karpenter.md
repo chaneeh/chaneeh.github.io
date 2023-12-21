@@ -15,16 +15,16 @@ last_modified_at: 2023-08-02T12:06:00+09:00
 
 # Background
 
-k8s 환경위에서 airflow를 운영하다보면 task가 증가함에 따라 컴퓨팅 용량이 확장되어야할 필요성이 생깁니다. celery worker concurrency를 늘린다던가 resource intensive한 task가 증가하는 경우가 그렇습니다.
+k8s 환경위에서 airflow를 운영하다보면 task가 증가함에 따라 node의 컴퓨팅 용량이 확장되어야할 필요성이 생깁니다. celery worker concurrency를 늘린다던가 resource intensive한 task를 다루어야 하는 경우가 그렇습니다.
 resource 할당량이 커진 worker pod를 scheduling 하기 위해 node의 type, resource size도 바뀌어야합니다. 
 
 eks 클러스터 내에서 노드 scaling을 위한 도구로써 autoscaler와 karpenter가 있는데요, 이번시간에는 CA(Kubernetes Cluster Autoscaler)와 Karpenter를 사용하여 pod의 resource가 증가하면서 확장된 용량의 node를 scaling하는 예시를 관찰해보겠습니다. 실험을 통해 어떤 도구가 안전성 및 관리포인트가 적은지 알아보겠습니다.
 
 ca와 karpenter에 대해서 간단하게 정리를 해보자면 다음과 같습니다.
 
-ca는 스케쥴링 되지 못한 파드가 있으면 auto scaling group(이하 asg)에 속한 노드를 클러스터에 추가함으로써 pod가 사용할 리소스를 확보합니다. 한가지 주의할점은 ca는 asg에 속한 노드들의 타입은 모두 수동으로 설정해야 하거나 같은 vcpu와 메모리를 가진다고 가정합니다. 그렇기에 스팟 인스턴스 용량을 안정적으로 확보하거나 변화하는 용량에 대비할려면 여러 사이즈와 패밀리 노드 asg를 조합해야 합니다. 또한 여러 asg들의 우선순위를 expander를 통해 `random`, `least-waste`, `price`등 여러 옵션을 수동을 조정할수 있습니다.
+ca는 스케쥴링 되지 못한 파드가 있으면 auto scaling group(이하 asg)에 속한 노드를 클러스터에 추가함으로써 pod가 사용할 리소스를 확보합니다. 한가지 주의할점은 ca는 asg에 속한 노드들의 타입은 모두 수동으로 설정해야 합니다. 그렇기에 스팟 인스턴스 용량을 안정적으로 확보하거나 변화하는 용량에 대비할려면 여러 사이즈와 패밀리 노드 asg를 조합해야 합니다. 또한 여러 asg들의 우선순위를 expander를 통해 `random`, `least-waste`, `price`등 여러 옵션을 수동을 조정할수 있습니다.
 
-karpenter는 ca와 마찬가지로 스케쥴링 되지 못한 pod가 있을때 노드를 증설합니다. 다만 ca와 다르게 노드그룹을 기반으로 노드를 증설하는게 아닌 ec2에 직접 api call을 함으로써 증설을 합니다. 이후 existing capacity들의 resource들을 비교하여 현재 운영되는 pod들에 적합한 optimized capacity도 karpenter가 관리하고 변경합니다. 또한 클러스터 용량 조절을 위해 provisioner라는 crd를 사용하고 allocation-stratagy는 용량 타입(spot, on-demand)에 따라 달라집니다.
+karpenter는 ca와 마찬가지로 스케쥴링 되지 못한 pod가 있을때 노드를 증설합니다. 다만 ca와 다르게 asg를 기반으로 노드를 증설하는게 아닌 ec2에 직접 api call을 함으로써 증설을 합니다. 이후 existing capacity들의 resource들을 비교하여 현재 운영되는 pod들에 적합한 optimized capacity도 karpenter가 관리하고 변경합니다. 또한 클러스터 용량 조절을 위해 provisioner라는 CRD를 사용하고 allocation-stratagy는 용량 타입(spot, on-demand)에 따라 달라집니다.
 spot instance capacity type을 사용하면 price-capacity-optimized allocation strategy를 사용하여 node-interruption이 적은 node type중에 lowest price node를 선택  합니다.
 on-demand capacity type일때는 기본적으로 capacity가 보장이 되기때문에 가격이 제일 적게드는 lowest price allocation strategy를 사용합니다.
 
@@ -317,7 +317,7 @@ ip-192-168-86-190.ap-northeast-2.compute.internal    Ready      <none>   37s    
 
 운영하고자 하는 환경에 맞게 scaling option을 선택하시면 될것 같습니다만, aws에서 pod resource가 자주 변하는 환경에서 운영하고 계시다면 관리포인트를 줄이기 위해 karpenter를 고려해보는것도 좋을것 같습니다.
 
-## Reference
+# Reference
 
 ---
 
