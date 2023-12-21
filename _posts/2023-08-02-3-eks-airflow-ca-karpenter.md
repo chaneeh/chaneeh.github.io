@@ -138,20 +138,7 @@ aws autoscaling describe-auto-scaling-groups \
 기존의 request에서 2배를 늘려 2vcpu spec을 가진 노드의 spec을 초과하게 설정하였습니다.
 해당 request pod를 binding시킬려면 t family 중 다음 사이즈인 t3a.xlarge 이상의 노드가 있어야합니다.
 
-**increasing worker pod resource**
-
-```yaml
-workers:
-  resources:
-    limits:
-      cpu: 2400m
-      memory: 2800Mi
-    requests:
-      cpu: 2400m
-      memory: 2800Mi
-```
-
-worker pod는 2.4cpu를 요청하고 있고 ca는 현재 2vcpu 노드로 구성된 ng-spot-2vcpu asg그룹만 있습니다. 더큰 용량의 asg를 추가하지 않고 dag 10개가 trigger 되면 어떻게 될까요?
+worker pod는 2.4cpu를 요청하고 있지만 ca는 현재 2vcpu 노드로 구성된 ng-spot-2vcpu asg그룹만 있습니다. 더큰 용량의 asg를 추가하지 않고 dag 10개가 trigger 되면 어떻게 될까요?
 
 hpa에 의해서 worker replicaset은 10개로 설정이 되었지만 resource 부족으로 node에 scheduled 되지 않았고 worker의 state가 pending 임을 확인할수 있습니다.  cpu credit 소모(일시적으로 추가 cpu 할당)를 통해 t3a.medium instance에서 몇개의 pod가 running하고 있는것을 확인할수 있습니다. 다만 대부분의 dag들은 timeout으로 fail이 났습니다.
 
@@ -178,7 +165,7 @@ my-release-worker-89b8f5bb6-r5ln8       2/2     Running       0               82
 
 **[After worker scale up] with t3a.xlarge asg⇒ expanding to t3a.xlarge group!**
 
-위의 예시를 통해, ca에서 용량 확장이 필요할 경우 해당 용량을 가진 asg를 명시적으로 추가해주어야함을 알수 있습니다. 이제 4vcpu spec t3a.xlarge로 구성된 ng-spot-4vcpu asg을 추가해봅시다.
+위의 예시를 통해, ca에서 node의 용량 확장이 필요할 경우 해당 용량을 가진 asg를 명시적으로 추가해주어야함을 알수 있습니다. 이제 4vcpu spec t3a.xlarge로 구성된 ng-spot-4vcpu asg을 추가해봅시다.
 
 ```bash
 eksctl create nodegroup \
@@ -228,7 +215,7 @@ my-release-worker-66d5cccdc4-x497n      2/2     Running   0               2m36s
 +----------------------------------------------------------+----+-----+-----+
 ```
 
-이번 실험을 통해 확인할수 있듯이 pod request가 늘어남에 따라 더큰 용량의 노드가 필요할 경우 ca는 target node type이 명시된 asg를 추가해주어야함을 확인할수 있었습니다.
+이번 실험을 통해 확인할수 있듯이 pod request가 늘어남에 따라 더큰 용량의 노드가 필요할 경우 ca는 확장된 용량의 node를 가진 asg를 추가해주어야함을 확인할수 있었습니다.
 
 이제 karpenter의 경우는 어떻게 노드 용량을 변화시키는지 관찰해봅시다.
 
@@ -236,7 +223,7 @@ my-release-worker-66d5cccdc4-x497n      2/2     Running   0               2m36s
 
 ---
 
-결론부터 말씀드리자면 karpenter는 초기 provisioner만 설정해놓으면 더큰 용량의 노드도 별도의 관리 포인트 없이 scale out이 가능합니다.
+결론부터 말씀드리자면 karpenter는 초기 provisioner만 설정해놓으면 더큰 용량의 노드도 ASG 변경과 같은 별도의 관리 포인트 없이 scale out이 가능합니다.
 
 이번 실험에 t instance family중에 2,4,8,16,32 cpu를 가진 spot instance들을 사용하기 위해 다음과 같이 provisionor를 작성해주기만 하면 다양한 용량을 커버하는 scale out 준비는 끝납니다.
 
