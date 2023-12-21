@@ -284,6 +284,7 @@ Normal  SuccessfulRescale  16m   horizontal-pod-autoscaler  New size: 1; reason:
 ## Conclusion
 
 hpa와 keda를 각 기준별로 비교해보았고, task의 대기/실행시간 및 자원의 효율적 사용 측면에서 keda가 더 나은 모습을 보여준것을 확인할수 있었습니다. 이는 airflow의 내부 동작원리와 사용목적(scheduling)으로 인해, scaling의 target value를 worker의 resource 보다는 실행해야하는 task와 slot의 갯수를 통해 더 정확하고 빠르게 산정할수 있었기 때문입니다. 
+
 또한 이후 백엔드 infra 구축시 서비스의 구성요소, 목적에 따라 scaling metric 전략을 다르게 해야한다는것도 배울수 있었습니다.
 
 ## Reference
