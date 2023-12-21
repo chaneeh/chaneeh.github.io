@@ -21,7 +21,7 @@ airflow를 eks에서 운영하면서 pod 및 node scaling에는 여러 option들
 
 hpa(horizontal-pod-autoscaling)는 deployment와 statefulset과 같은 워크로드 리소스를 수요에 맞게 자동으로 크기 조정을 하는 k8s object입니다. 쿠버네티스 api 자원 및 컨트롤러 형태로 구현되어있는데요, 컨트롤러는 평균 cpu 사용률, 메모리 사용률 등 관측된 메트릭들을 목표에 맞추기 위해 워크로드 리소스 크기를 조정합니다. 조정 알고리즘은 아래 contents에서 세부적으로 다루어 보겠습니다.
 
-keda(kubernetes event-driven autoscaling)도 워크로드 리소스들을 scaling 할수 있는 component 입니다. hpa와 같은 component와 같이 일하며 hpa의 수정/복제 없이 여러 이벤트 소스로부터 event-driven하게 scaling 기능을 확장할수 있습니다. 운영을 위해서 CRD(custom resource definition) 과 k8s metric server를 사용합니다.
+keda(kubernetes event-driven autoscaling)도 워크로드 리소스들을 scaling 할수 있는 component 입니다. hpa와 같은 component와 같이 일하며 hpa의 수정 없이 여러 이벤트 소스로부터 event-driven하게 scaling 기능을 확장할수 있습니다. 운영을 위해서 CRD(custom resource definition) 과 k8s metric server를 사용합니다.
 
 # Contents
 
@@ -29,7 +29,7 @@ keda(kubernetes event-driven autoscaling)도 워크로드 리소스들을 scalin
 
 dag 한개당 worker-pod 1개의 자원을 활용하도록 설정하였고 dag는 4개를 설정했기에, 동시실행을 위한 최적의 pod 갯수는 4개입니다.
 
-비교 기준은 크게 2가지가 있습니다.
+운영환경에서 pod-scaling 적합성 비교 기준은 크게 2가지로 선정하였습니다.
 - 빠른 scale out 으로 task들의 실행 시작 시간이 빠른가?
 - 적정 pod resource(4개)를 활용하는가?
 
@@ -198,7 +198,7 @@ workers:
 		...
 ```
 
-**`worker-kedaautoscaler.yaml` (helm 자동 설치)**
+**`worker-kedaautoscaler.yaml` **
 
 ```sql
 apiVersion: keda.sh/v1alpha1
@@ -283,7 +283,7 @@ Normal  SuccessfulRescale  16m   horizontal-pod-autoscaler  New size: 1; reason:
 
 ## Conclusion
 
-hpa와 keda를 각 기준별로 비교해보았고, task의 대기/실행시간 및 자원의 효율적 사용 측면에서 keda가 더 나은 모습을 보여준것을 확인할수 있었습니다. 이는 airflow의 내부 동작원리와 사용목적(scheduling)으로 인해, scaling의 target value를 worker의 resource 보다는 실행해야하는 task와 slot의 갯수를 통해 더 정확하고 빠르게 산정할수 있었기 때문입니다. 
+hpa와 keda를 각 기준별로 비교해보았고, task의 대기/실행시간 및 자원의 효율적 사용 측면에서 keda가 더 효율적인 모습을 보여준것을 확인할수 있었습니다. 이는 airflow의 내부 동작원리와 사용목적(scheduling)으로 인해, scaling의 target value를 worker의 resource 보다는 실행해야하는 task와 slot의 갯수를 통해 더 정확하고 빠르게 산정할수 있었기 때문입니다. 
 
 또한 이후 백엔드 infra 구축시 서비스의 구성요소, 목적에 따라 scaling metric 전략을 다르게 해야한다는것도 배울수 있었습니다.
 
