@@ -30,7 +30,7 @@ keda(kubernetes event-driven autoscaling)도 워크로드 리소스들을 scalin
 dag 한개당 worker-pod 1개의 자원을 활용하도록 설정하였고 dag는 4개를 설정했기에, 동시실행을 위한 최적의 pod 갯수는 4개입니다.
 
 비교 기준은 크게 2가지가 있습니다.
-- 빠른 scale in/out 과 함께 task들의 실행/종료 시간이 빠른가?
+- 빠른 scale out 으로 task들의 실행 시작 시간이 빠른가?
 - 적정 pod resource(4개)를 활용하는가?
 
 hpa의 scale out을 위해 worker pod의 평균 cpu 사용률을 **`80%`** 로 맞추었고 구체적인 환경세팅은 아래와 같습니다.
