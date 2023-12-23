@@ -412,8 +412,9 @@ def **execute_command**(command_to_exec: CommandType) -> None:
 
 소스코드를 보면서 local executor, kubernetes executor, celery executor 실행 방식의 차이를 보았습니다.
 
-local executor는 parallelism 설정에 따라 process 생성방식에 차이가 있지만,
-공통적으로 내부 resource 내에서 process들을 통해 task들을 처리합니다. 
+local executor는 parallelism 설정에 따라 process를 미리 생성 또는 task 마다 subproces 생성의 차이가 있지만,
+공통적으로 한 서버 resource 내에서 process들을 통해 task들을 처리합니다. 
+
 실무에서 주로 쓰이는 remote executor 인 kubernetes executor는 task 마다 pod를 실행시키고,
 celery executor는 queue를 통해 ingestion 이후 celery worker에서 subprocess를 통한 실시간 처리를 지향합니다. 실행 방식에 따라 장단점이 있기에 실제 업무에서 사용하게 되는 경우도 다릅니다.
 
