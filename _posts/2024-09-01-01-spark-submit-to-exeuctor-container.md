@@ -1,6 +1,6 @@
 ---
-title:   "Spark-Submit 이후 YARN 클러스터에서 벌어지는 일들"
-excerpt: "Spark-Submit 이후 YARN 클러스터에서 벌어지는 일들"
+title:   "Spark-Submit 이후 YARN 클러스터에서 실행되는 과정"
+excerpt: "Spark-Submit 이후 YARN 클러스터에서 실행되는 과정"
 toc: true
 toc_sticky: true
 
