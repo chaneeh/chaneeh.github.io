@@ -522,7 +522,9 @@ case LaunchTask(data) =>
 
 # Conclusion
 
-이번 분석을 통해 Spark-Submit 명령어로부터 시작하여 YARN ResourceManager와의 요청을 통해 Executor 컨테이너가 할당되고 ExecutorBackend가 시작되는 과정을 살펴보았습니다. 개인적으로 분석하면서 YarnAllocator가 사용할 container를 locality(호스트, 랙, ANYHOST) 우선순위 기반으로 선택해서 executor 서버를 실행하는 과정이 제일 흥미로웠습니다. 이후 driver의 TaskScheduler에서 task를 executor에 분배할때 locality(shuffle 최소화)를 사용하기 위한 사전작업이라고 생각합니다.
+이번 분석을 통해 Spark-Submit 명령어로부터 시작하여 YARN ResourceManager와의 요청을 통해 Executor 컨테이너가 할당되고 ExecutorBackend가 시작되는 과정을 살펴보았습니다. 
+
+개인적으로 분석하면서 YarnAllocator가 사용할 container를 locality(호스트, 랙, ANYHOST) 우선순위 기반으로 선택해서 executor 서버를 실행하는 과정이 제일 흥미로웠습니다. 이후 driver의 TaskScheduler에서 task를 executor에 분배할때 locality(shuffle 최소화)를 사용하기 위한 사전작업이라고 생각합니다.
 
 # Reference
 
