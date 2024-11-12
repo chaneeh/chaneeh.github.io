@@ -348,7 +348,7 @@ nmClient.startContainer(container.get, ctx)
 
 ### [class] CoarceGrainedExecutorBackend
 
-`YarnCoarseGrainedExecutorBackend` 에서는 `CoarseGrainedExecutorBackend` 객체를 생성함으로써 `driver`와의 통신과 작업 처리를 담당합니다. `CoarseGrainedExecutorBackend` 클래스는 `executor`와 `driver` 간의 작업 전송과 상태 관리 기능을 수행하며, `executor`에서 발생하는 작업을 처리하고 그 결과를 driver에 전송하는 역할도 맡습니다.
+`YarnCoarseGrainedExecutorBackend` 에서는 `CoarseGrainedExecutorBackend` 객체를 생성함으로써 `driver`와의 통신과 작업 처리를 담당합니다. `CoarseGrainedExecutorBackend` 클래스는 `executor`와 `driver` 간의 작업 전송과 상태 관리 기능을 수행하며, `executor`에서 발생하는 작업을 처리하고 그 결과를 `driver`에 전송하는 역할도 맡습니다.
 
 ```scala
 class CoarseGrainedExecutorBackend() extends IsolatedThreadSafeRpcEndpoint with ExecutorBackend with Logging {
