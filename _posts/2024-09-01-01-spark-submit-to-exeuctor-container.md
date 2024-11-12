@@ -294,7 +294,7 @@ for (allocatedContainer <- allocatedContainers) {
 ```
 
 호스트에 맞지 않는 컨테이너에 대해 랙 매칭을 시도하는 코드입니다. resolver.resolve로 컨테이너가 있는 랙을 확인후 matchContainerToRequest()로 랙과 일치하는지 확인하고, 일치하는 컨테이너는 containersToUse에 추가됩니다. 일치하지 않는 경우 remainingAfterRackMatches에 저장됩니다.
-YARN의 RackResolver가 thread interruption을 무시하기 때문에 메인 thread가 AM interruption을 무시하지 않도록 rack matching을 별도의 스레드에서 수행후 완료될때까지 대기합니다.
+
 
 ```scala
 val remainingAfterRackMatches = new ArrayBuffer[Container]
