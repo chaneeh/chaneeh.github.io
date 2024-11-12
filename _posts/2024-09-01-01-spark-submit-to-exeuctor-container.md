@@ -14,10 +14,9 @@ last_modified_at: 2024-09-01T:12:30+09:00
 
 # Motivation
 
-
 Spark 애플리케이션을 YARN 클러스터에 제출하면, 내부에서는 어떤 일이 진행될까요?
 
-이번 글에서는 `spark-submit` 명령어 이후 Spark와 YARN이 어떻게 상호작용하며 `ApplicationMaster`, `Driver`를 생성하고 `Executor` 컨테이너를 할당하는지를 자세히 살펴보고자 합니다. 이를 위해 Spark 애플리케이션이 실행되는 과정을 주요 클래스와 메서드 중심으로 분석해 보았습니다.
+이번 글에서는 `spark-submit` 명령어 이후 Spark와 YARN이 상호작용하며 `ApplicationMaster`, `Driver`를 생성하는 과정과 `Executor` 컨테이너를 할당하는 과정을 자세히 살펴보고자 합니다. 이를 위해 Spark 애플리케이션이 실행되는 과정을 주요 클래스와 메서드 중심으로 분석해 보았습니다.
 
 특히, 현업에서 자주 활용되는 YARN 클러스터 모드에 초점을 맞춰 Spark와 YARN이 어떻게 협력하는지, 그리고 그 과정에서의 핵심 흐름을 이해하기 쉽게 설명해 보려 합니다.
 
