@@ -392,7 +392,7 @@ object CoarseGrainedExecutorBackend extends Logging {
 
 #### [method] run
 
-드라이버와의 RPC 연결을 설정합니다. `setupEndpointRefByURI` 메서드를 사용하여 엔드포인트를 설정하고, 이 과정을 통해 `executor`는 드라이버와 통신할 수 있게 됩니다.
+드라이버와의 RPC 연결을 설정합니다. `setupEndpointRefByURI` 메서드를 사용하여 엔드포인트를 설정하고, 이 과정을 통해 `executor`는 `driver`와 통신할 수 있게 됩니다.
 
 ```scala
 val fetcher = RpcEnv.create("driverPropsFetcher", ... )
