@@ -428,7 +428,7 @@ rpcEnv.asyncSetupEndpointRefByURI(driverUrl).flatMap { ref =>
 
 #### [method] receive
 
-`executor`에서 rpc 요청을 받았을때 호출되는 메서드 입니다. `RegisteredExecutor` 메시지는 드라이버에 `executor`가 성공적으로 등록되었을 때 수신됩니다. `executor`가 등록되면 task를 수행하는 `Executor` 객체를 생성하고, 작업을 처리할 준비가 되었음을 알리는 `LaunchedExecutor` 메시지를 드라이버에게 전송합니다.
+`executor`에서 rpc 요청을 받았을때 호출되는 메서드 입니다. `RegisteredExecutor` 메시지는 드라이버에 `executor`가 성공적으로 등록되었을 때 수신됩니다. `executor`가 등록되면 `task`를 수행하는 `Executor` 객체를 생성하고, 작업을 처리할 준비가 되었음을 알리는 `LaunchedExecutor` 메시지를 드라이버에게 전송합니다.
 
 ```scala
 case RegisteredExecutor =>
@@ -443,8 +443,8 @@ case RegisteredExecutor =>
   }
 ```
 
-`LaunchTask` 메시지는 이후 액션 호출뒤 드라이버가 `executor`에게 `작업(Task)`을 할당할 때 전송됩니다.
-T`askDescription.decode` 메서드로 할당된 `TaskDescription`을 디코딩하여 작업 설명을 추출합니다.
+`LaunchTask` 메시지는 이후 액션 호출뒤 `driver`가 `executor`에게 `작업(Task)`을 할당할 때 호출되는 메서드 입니다.
+`TaskDescription.decode` 메서드로 할당된 `TaskDescription`을 디코딩하여 작업 설명을 추출합니다.
 이후 `executor.launchTask` 메서드를 통해 디코딩된 `taskDescription`을 `executor`의 작업 실행 스레드에 전달하여 처리합니다. `executor` 객체가 생성되지 않은 상태에서 작업이 할당되면, `executor`를 종료합니다.
 
 ```scala
