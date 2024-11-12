@@ -346,37 +346,9 @@ nmClient.startContainer(container.get, ctx)
 
 ## Executor
 
-### [class] YarnCoarceGrainedExecutorBackend
-
-`YarnCoarceGrainedExecutorBackend`는 `executor` 애플리케이션의 시작 클래스입니다. 또한 YARN 환경에서 `executor`를 관리하는 `CoarseGrainedExecutorBackend`의 YARN 구현체입니다. YARN 컨테이너에서 필요한 속성을 얻고 `executor`를 관리하는 메서드가 추가되어있습니다.
-
-```scala
-class YarnCoarseGrainedExecutorBackend() extends CoarseGrainedExecutorBackend() with Logging {
-  override def getUserClassPath
-  override def extractAttributes
-  override def extractLogUrls
-}
-
-object YarnCoarseGrainedExecutorBackend extends Logging {
-  def main(args: Array[String]): Unit = { ... }
-}
-```
-
-#### [method] main
-
-AM에 의해 실행된후 `executor`의 진입점 method 입니다. `createFn`을 통해 `YarnCoarseGrainedExecutorBackend` 객체를 생성하고, 그 후 `CoarseGrainedExecutorBackend.run` 메서드를 호출하여 `executor`를 시작합니다.
-
-```scala
-val createFn: (RpcEnv, CoarseGrainedExecutorBackend.Arguments, SparkEnv, ResourceProfile) =>
-  CoarseGrainedExecutorBackend = { ... }
-val backendArgs = CoarseGrainedExecutorBackend.parseArguments(args, ...)
-CoarseGrainedExecutorBackend.run(backendArgs, createFn)
-```
-
-
 ### [class] CoarceGrainedExecutorBackend
 
-`CoarseGrainedExecutorBackend`는 `executor`의 드라이버와의 통신 및 작업 처리를 관리하는 클래스입니다. `executor`와 드라이버 간의 작업 전송, 상태 관리등의 기능을 담당하며, `executor`에서 발생하는 작업을 처리하고 결과를 driver에 전송하기도 합니다.
+`YarnCoarseGrainedExecutorBackend` 에서는 `CoarseGrainedExecutorBackend` 객체를 생성함으로써 `driver`와의 통신과 작업 처리를 담당합니다. `CoarseGrainedExecutorBackend` 클래스는 `executor`와 `driver` 간의 작업 전송과 상태 관리 기능을 수행하며, `executor`에서 발생하는 작업을 처리하고 그 결과를 driver에 전송하는 역할도 맡습니다.
 
 ```scala
 class CoarseGrainedExecutorBackend() extends IsolatedThreadSafeRpcEndpoint with ExecutorBackend with Logging {
