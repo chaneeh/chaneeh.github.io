@@ -17,7 +17,7 @@ last_modified_at: 2024-09-01T:12:30+09:00
 
 Spark 애플리케이션을 YARN 클러스터에 제출하면, 내부에서는 어떤 일이 진행될까요?
 
-이번 글에서는 `spark-submit` 명령어 이후 Spark와 YARN이 어떻게 상호작용하며 `Executor` 컨테이너를 할당하고, `Driver`와 `Executor`가 어떻게 통신하는지를 자세히 살펴보고자 합니다. 이를 위해 Spark 애플리케이션이 실행되는 주요 클래스와 메서드를 중심으로 소스 코드를 분석해 보았습니다.
+이번 글에서는 `spark-submit` 명령어 이후 Spark와 YARN이 어떻게 상호작용하며 `ApplicationMaster`, `Driver`를 생성하고 `Executor` 컨테이너를 할당하는지를 자세히 살펴보고자 합니다. 이를 위해 Spark 애플리케이션이 실행되는 과정을 주요 클래스와 메서드 중심으로 분석해 보았습니다.
 
 특히, 현업에서 자주 활용되는 YARN 클러스터 모드에 초점을 맞춰 Spark와 YARN이 어떻게 협력하는지, 그리고 그 과정에서의 핵심 흐름을 이해하기 쉽게 설명해 보려 합니다.
 
@@ -197,15 +197,10 @@ createAllocator(driverRef, userConf, rpcEnv, appAttemptId, distCacheConf())
 
 ### [class] YarnAllocator
 
-`ApplicationMaster` class에서 `createAllocator` 메서드 호출이후 컨테이너 자원 할당을 위해 `YarnAllocator`가 호출됩니다. `YarnAllocator`는 `ResourceManager`에 `executor` container를 요청하고 locality(호스트, 랙, ANYHOST)순으로 사용대기열에 올린다음 `executorRunnable`를 통해 `exeuctor`를 실행시킵니다.
+`ApplicationMaster` class에서 `createAllocator` 메서드 호출이후 컨테이너 자원 할당을 위해 `YarnAllocator`가 호출됩니다. `YarnAllocator`는 `ResourceManager`에 `executor` container를 요청하고 locality(호스트, 랙, ANYHOST)순으로 선택한 다음 `executorRunnable`를 통해 `exeuctor`를 실행시킵니다.
 
 ```scala
-class YarnAllocator(
-    driverUrl: String,
-    driverRef: RpcEndpointRef,
-    conf: YarnConfiguration,
-    sparkConf: SparkConf,
-    amClient: AMRMClient[ContainerRequest]) {
+class YarnAllocator(driverRef: RpcEndpointRef, sparkConf: SparkConf, amClient: AMRMClient[ContainerRequest]) {
   def allocateResources(): Unit = synchronized {...}
   def handleAllocatedContainers(allocatedContainers: Seq[Container]): Unit = {...}
   def runAllocatedContainers(containersToUse: ArrayBuffer[Container]): Unit = {...}
