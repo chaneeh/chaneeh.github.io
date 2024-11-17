@@ -1,6 +1,6 @@
 ---
-title:   "Kafka에서 Raft 프로토콜을 활용한 Topic 생성 및 Commit 과정 알아보기"
-excerpt: "Kafka에서 Raft 프로토콜을 활용한 Topic 생성 및 Commit 과정 알아보기"
+title:   "Kafka의 Raft 기반 Topic 생성과 Commit"
+excerpt: "Kafka의 Raft 기반 Topic 생성과 Commit"
 toc: true
 toc_sticky: true
 
@@ -13,11 +13,11 @@ last_modified_at: 2024-10-01T:12:30+09:00
 
 # Motivation
 
-Kafka는 높은 확장성과 안정성을 통해 대규모 데이터 스트리밍 환경에서 핵심적인 역할을 수행합니다. 특히, **토픽 생성 요청**은 단순한 메타데이터 추가 작업을 넘어, Raft 합의 프로토콜을 기반으로 리더와 팔로워 간의 **로그 복제**와 **합의 과정**을 포함합니다.
+Kafka는 높은 확장성과 안정성을 통해 대규모 데이터 스트리밍 환경에서 핵심적인 역할을 수행합니다. 특히, **토픽 생성 요청**은 단순한 메타데이터 추가 작업을 넘어, Raft 합의 프로토콜을 기반으로 리더와 팔로워 간의 **로그 복제**와 **commit 과정**을 포함합니다.
 
-리더는 새로운 메타데이터 변경 사항을 생성하고, 이를 FetchRequest와 FetchResponse를 통해 팔로워들에게 전파합니다. 이후 과반수 이상의 노드에서 합의가 이루어지면 해당 변경 사항이 Commit됩니다. 이러한 복제와 합의 과정은 Kafka가 분산 환경에서 데이터의 일관성과 안정성을 유지할수 있게 해줍니다.
+리더는 새로운 메타데이터 변경 사항을 생성하고, 이를 FetchRequest와 FetchResponse를 통해 팔로워들에게 전파합니다. 이후 과반수 이상의 노드에서 복제가 이루어지면 해당 변경 사항이 Commit됩니다. 이러한 복제와 Commit 과정은 Kafka가 분산 환경에서 데이터의 일관성과 안정성을 유지할수 있게 해줍니다.
 
-이번 글에서는 Kafka의 Topic Creation 요청 처리 과정 중 **로그 복제와 합의 과정**에 초점을 맞춥니다. 이를 통해 Kafka의 내부 동작 원리를 이해하고, 안정적인 분산 시스템 설계에 대한 통찰을 제공하고자 합니다. 소스코드로 kafka version 3.9.0을 사용하였습니다.
+이번 글에서는 Kafka의 Topic Creation 요청 처리 과정 중 **로그 복제와 commit 과정**에 초점을 맞춥니다. 이를 통해 Kafka의 내부 동작 원리를 이해하고, 안정적인 분산 시스템 설계에 대한 통찰을 제공하고자 합니다. 소스코드로 kafka version 3.9.0을 사용하였습니다.
 
 # Contents
 
@@ -115,7 +115,7 @@ public void run() throws Exception {
 
 ### [class] KafkaRaftClient
 
-리더와 팔로워 간 로그 복제 및 합의 과정을 관리합니다.
+리더와 팔로워 간 로그 복제 및 commit 과정을 관리합니다.
 `KafkaRaftClient`는 Raft 프로토콜의 구현체로, 리더는 로그를 전송하고 팔로워는 이를 수신 및 기록합니다.
 
 #### [method] handleFetchRequest
@@ -164,7 +164,7 @@ private void appendAsFollower(Records records) {
 }
 ```
 
-## **2. 리더와 팔로워의 합의 및 Commit 과정**
+## **2. 리더와 팔로워의 Commit 과정**
 
 ### [class] LeaderState
 #### [method] maybeUpdateHighWatermark
@@ -229,7 +229,7 @@ override def onMetadataUpdate(delta: MetadataDelta, newImage: MetadataImage, man
 
 # Conclusion
 
-Kafka에서 Topic 생성 요청은 단순히 메타데이터를 기록하는 것을 넘어, **Raft 프로토콜**을 통해 로그를 복제하고 합의 및 커밋을 통해 Broker에 반영되는 과정을 포함합니다. 이번 글에서는 **로그 복제 및 합의**에 초점을 맞춰 주요 클래스를 분석하였습니다. 
+Kafka에서 Topic 생성 요청은 단순히 메타데이터를 기록하는 것을 넘어, **Raft 프로토콜**을 통해 로그를 복제하고 commit을 통해 Broker에 반영되는 과정을 포함합니다. 이번 글에서는 **로그 복제 및 commit**에 초점을 맞춰 주요 클래스를 분석하였습니다. 
 
 리더는 Topic 생성 메타데이터를 Raft 로그로 작성한 뒤 팔로워들에게 fetch response를 통해 전송합니다. 이후 과반수 이상 복제가 완료되었을때 High Watermark를 업데이트하고 팔로워는 이를 기반으로 Commit을 완료해 MetadataCache를 업데이트하고, Broker에 전달하여 최종적으로 클러스터 상태를 반영합니다. 이러한 구조로 kafka가 분산 환경에서도 확장성과 장애복원력을 가질수 있게 되었다고 생각합니다.
 
