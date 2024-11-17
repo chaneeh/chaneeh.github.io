@@ -1,6 +1,6 @@
 ---
-title:   "Kafka의 Raft 기반 Topic 생성과 Commit"
-excerpt: "Kafka의 Raft 기반 Topic 생성과 Commit"
+title:   "Kafka의 Raft 기반 Topic 생성과 Commit 과정"
+excerpt: "Kafka의 Raft 기반 Topic 생성과 Commit 과정"
 toc: true
 toc_sticky: true
 
