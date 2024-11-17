@@ -21,7 +21,7 @@ Kafka는 높은 확장성과 안정성을 통해 대규모 데이터 스트리�
 
 # Contents
 
-## **1. Topic Metadata 로그 복제 과정**
+## 1. Topic Metadata 로그 복제 과정
 
 ### [class] ControllerApis
 
@@ -166,7 +166,7 @@ private void appendAsFollower(Records records) {
 }
 ```
 
-## **2. 리더와 팔로워의 Commit 과정**
+## 2. 리더와 팔로워의 Commit 과정
 
 ### [class] LeaderState
 #### [method] maybeUpdateHighWatermark
@@ -231,7 +231,7 @@ override def onMetadataUpdate(delta: MetadataDelta, newImage: MetadataImage, man
 
 # Conclusion
 
-Kafka는 Topic 생성시 **Raft 프로토콜**을 통해 로그를 복제하고 commit을 통해 Broker에 반영되는 과정을 포함합니다. 이번 글에서는 **로그 복제 및 commit**에 초점을 맞춰 주요 클래스를 분석하였습니다. 
+Kafka는 Topic 생성시 Raft 프로토콜을 통해 로그를 복제하고 commit을 통해 Broker에 반영되는 과정을 포함합니다. 이번 글에서는 로그 복제 및 commit에 초점을 맞춰 주요 클래스를 분석하였습니다. 
 
 리더는 Topic 생성 메타데이터를 Raft 로그로 작성한 뒤 팔로워들에게 fetch response를 통해 전송합니다. 이후 과반수 이상 복제가 완료되었을때 High Watermark를 업데이트하고 팔로워는 이를 기반으로 Commit을 완료해 MetadataCache를 업데이트하고, Broker에 전달하여 최종적으로 클러스터 상태를 반영합니다. 이러한 구조로 kafka가 분산 환경에서도 확장성과 안전성을 가질수 있게 되었다고 생각합니다.
 
