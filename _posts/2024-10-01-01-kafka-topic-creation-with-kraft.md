@@ -126,7 +126,9 @@ public void run() throws Exception {
 private CompletableFuture<FetchResponseData> handleFetchRequest(
     RaftRequest.Inbound requestMetadata, long currentTimeMs
 ) {
-    FetchResponseData response = tryCompleteFetchRequest(...);
+    FetchResponseData response = tryCompleteFetchRequest(
+        // read metadata log
+    );
     return completedFuture(response);
 }
 ```
