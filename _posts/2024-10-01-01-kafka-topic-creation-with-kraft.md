@@ -1,6 +1,6 @@
 ---
-title:   "Kafka raft를 통한 topic 생성 과정"
-excerpt: "Kafka raft를 통한 topic 생성 과정"
+title:   "Kafka에서 Raft 프로토콜을 활용한 Topic 생성 및 Commit 과정 알아보기"
+excerpt: "Kafka에서 Raft 프로토콜을 활용한 Topic 생성 및 Commit 과정 알아보기"
 toc: true
 toc_sticky: true
 
