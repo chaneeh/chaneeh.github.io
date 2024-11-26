@@ -183,8 +183,7 @@ private def submitMissingTasks(stage: Stage, jobId: Int): Unit = {
 locality의 우선순위는 `Process Local` → `Node Local` → `Rack Local` → `ANY`순 입니다.
 
 ```scala
-def resourceOffers(
-    offers: IndexedSeq[WorkerOffer]): Seq[Seq[TaskDescription]] = synchronized {
+def resourceOffers(offers: IndexedSeq[WorkerOffer]): Seq[Seq[TaskDescription]] = synchronized {
   for (taskSet <- sortedTaskSets) {
     for (currentMaxLocality <- taskSet.myLocalityLevels) {
         var launchedTaskAtCurrentMaxLocality = false
