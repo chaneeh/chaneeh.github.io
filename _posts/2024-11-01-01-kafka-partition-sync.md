@@ -34,7 +34,7 @@ ReplicaManager는 Kafka 브로커에서 파티션의 생성, 상태 업데이트
 #### [method] applyLocalFollowersDelta
 
 이 메서드는 topic metadata가 커밋된 이후 호출되며, 파티션별 상태를 설정하고 Fetcher 스레드가 데이터를 가져오도록 준비합니다.
-Topic metadata를 기반으로 파티션 상태를 생성하며 리더 변경 여부를 감지하여 Fetcher 스레드 시작을 ReplicaFetcherManager에게 요청합니다.
+Topic metadata를 기반으로 파티션을 생성하며 리더 변경시 Fetcher 스레드 생성을 ReplicaFetcherManager에게 요청합니다.
 
 ```scala
 def applyLocalFollowersDelta(changedPartitions: mutable.Set[Partition], newImage: MetadataImage, delta: TopicsDelta,
