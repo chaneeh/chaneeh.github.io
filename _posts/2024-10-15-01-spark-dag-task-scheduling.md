@@ -82,8 +82,8 @@ def submitJob[T, U](
 
 #### [method] createResultStage
 
-최종적으로 실행될 `ResultStage`를 생성하여 stage submit을 준비하는 method입니다.
-`getOrCreateParentStages` 메서드를 통해 parent 관계에 있는 `ShuffleMapStage`들을 정의합니다.
+추가된 `JobSubmitted` 이벤트가 실행시 호출되며, 최종적으로 실행될 `ResultStage`를 생성하여 stage submit을 준비하는 method입니다.
+`getOrCreateParentStages` 메서드를 통해 `ResultStage`와 parent 관계에 있는 `ShuffleMapStage`들을 정의합니다.
 parent stage들과 `ResultStage`를 통해 `DAG`를 구성합니다.
 
 ```scala
