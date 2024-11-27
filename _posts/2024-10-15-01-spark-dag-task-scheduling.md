@@ -229,7 +229,7 @@ private def launchTasks(tasks: Seq[Seq[TaskDescription]]): Unit = {
 
 이 글에서는 Spark 애플리케이션이 실행될 때 RDD의 Action 호출로부터 시작해 DAG를 생성하고, Task로 분해해 Executor에 전달되는 전 과정을 살펴보았습니다. Spark의 주요 컴포넌트들이 어떻게 협력하는지와 함께 RDD → DAG 생성 → Task Scheduling으로 이어지는 내부 동작을 소스코드를 통해 확인하며, Spark의 효율적인 설계 원리를 이해할 수 있었습니다.
 
-특히, Task Scheduling 과정에서 데이터 Locality를 기반으로 최적화하는 부분은, 클러스터 자원을 효과적으로 활용하기 위한 spark의 설계를 확인할수 있어서 신기하였습니다.
+특히, Task Scheduling 과정에서 데이터 Locality를 기반으로 최적화하는 부분은, 클러스터 자원을 효과적으로 활용하기 위한 Spark의 설계를 확인할수 있어서 인상적이었습니다.
 
 # Reference
 
