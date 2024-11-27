@@ -62,15 +62,12 @@ ControllerResult<CreateTopicsResponseData> createTopic(
     CreateTopicsRequestData request,
     Set<String> describable
 ) {
-    // Partition 배치 계산
     TopicAssignment topicAssignment = clusterControl.replicaPlacer().place(new PlacementSpec(
         0, numPartitions, replicationFactor
     ), clusterDescriber);
 
-    // TopicRecord 생성
     records.add(new ApiMessageAndVersion(new TopicRecord().setName(topic.name()).setTopicId(topicId), (short) 0));
 
-    // QuorumController에게 result 반환
     return ControllerResult.atomicOf(records, data);
 }
 ```
@@ -174,16 +171,16 @@ private void appendAsFollower(Records records) {
 
 ```java
 private boolean maybeUpdateHighWatermark() {
-  // Find the largest offset which is replicated to a majority of replicas (the leader counts)
-  ArrayList<ReplicaState> followersByDescendingFetchOffset = followersByDescendingFetchOffset()
-      .collect(Collectors.toCollection(ArrayList::new));
+    // Find the largest offset which is replicated to a majority of replicas (the leader counts)
+    ArrayList<ReplicaState> followersByDescendingFetchOffset = followersByDescendingFetchOffset()
+        .collect(Collectors.toCollection(ArrayList::new));
 
-  int indexOfHw = voterStates.size() / 2;
-  Optional<LogOffsetMetadata> highWatermarkUpdateOpt = followersByDescendingFetchOffset.get(indexOfHw).endOffset;
+    int indexOfHw = voterStates.size() / 2;
+    Optional<LogOffsetMetadata> highWatermarkUpdateOpt = followersByDescendingFetchOffset.get(indexOfHw).endOffset;
 
-  if (highWatermarkUpdateOpt.isPresent()) {
+    if (highWatermarkUpdateOpt.isPresent()) {
     // update HighWaterMark
-  }
+    }
 }
 ```
 
