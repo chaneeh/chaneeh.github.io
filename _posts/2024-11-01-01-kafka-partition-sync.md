@@ -20,7 +20,7 @@ Kafka는 대규모 데이터 스트리밍 환경에서 신뢰성과 일관성을
 이번 글에서는 **리더와 팔로워 파티션의 데이터 동기화와 High Watermark(HWM) 관리**를 통해 실제 데이터 일관성을 어떻게 유지하는지 분석하고자 합니다.
 특히, 리더와 팔로워 간의 **Fetch 요청 처리, 로그 동기화, HWM 갱신**이 어떻게 이루어지는지를 중심으로 분석합니다. 
 
-이번 글이 Kafka 클러스터 내부에서 벌어지는 변화를 깊이 이해하는 데 도움이 되기를 기대합니다. 분석에 사용한 소스코드로 kafka version 3.9.0을 사용하였습니다.
+이번 글이 Kafka 클러스터 내부에서 벌어지는 변화를 깊이 이해하는 데 도움이 되기를 기대합니다. 분석에 사용한 소스코드로 Kafka version 3.9.0을 사용하였습니다.
 
 # Contents
 
@@ -67,7 +67,7 @@ def applyLocalFollowersDelta(changedPartitions: mutable.Set[Partition], newImage
 #### [method] addFetcherForPartitions
 
 각 브로커의 파티션에 적합한 Fetcher 스레드를 브로커 별로 그룹화하여 관리합니다.
-리더 정보를 바탕으로 Fetcher 스레드를 생성 또는 재활용하고, 각 Fetcher 스레드에 파티션을 등록하여 start method를 통해 작업을 시작을 요청합니다.
+리더 정보를 바탕으로 Fetcher 스레드를 생성 또는 재활용하고, 각 Fetcher 스레드에 파티션을 등록하여 `start` method를 통해 작업 시작을 요청합니다.
 
 ```scala
 def addFetcherForPartitions(partitionAndOffsets: Map[TopicPartition, InitialFetchState]): Unit = {
