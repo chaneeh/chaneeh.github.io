@@ -52,9 +52,8 @@ Topic 및 Partition 메타데이터 로그를 생성하고, 이를 기반으로 
 #### [method] createTopic
 
 `ReplicationControlManager`는 Topic 및 Partition 관련 메타데이터를 생성하고, 이를 기록할 `TopicRecord`를 만듭니다.
-
-`replicaPlacer`를 이용해 Partition과 Replica 배치를 생성합니다. 이후 `TopicRecord` 형태로 메타데이터 로그를 생성하고 `QuoromController`에 반환합니다.
-
+`replicaPlacer`를 이용해 Partition과 Replica 배치를 생성합니다. 
+이후 `TopicRecord` 형태로 메타데이터 로그를 생성하고 `QuoromController`에 반환합니다.
 `replicaPlacer`의 로직은 `StripedReplicaPlacer` class에서 확인할수 있는데, rack과 broker별로 최대한 고르게 분산하도록 우선순위를 두고 있습니다.
 
 ```java
