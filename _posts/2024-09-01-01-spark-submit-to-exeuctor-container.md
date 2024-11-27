@@ -40,8 +40,7 @@ class SparkSubmit extends Logging {
 #### [method] runMain
 
 `spark-submit` 명령어가 제출되면, 인자가 파싱된 후 `runMain` 메서드가 호출됩니다. 
-`runMain`에서는 `prepareSubmitEnvironment` 메서드를 통해 애플리케이션 환경이 설정됩니다. 
-이 환경에는 애플리케이션 인자, 클래스 경로, Spark 설정, 메인 클래스 등이 포함됩니다. 
+`runMain`에서는 `prepareSubmitEnvironment` 메서드를 통해 Spark 설정, 메인 클래스와 같은 애플리케이션 환경이 설정됩니다. 
 YARN의 클러스터 배포 모드로 제출되는 경우, `childMainClass`는 `org.apache.spark.deploy.yarn.YarnClusterApplication`으로 설정됩니다.
 
 ```scala
