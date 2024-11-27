@@ -196,17 +196,17 @@ private boolean maybeUpdateHighWatermark() {
 
 ```java
 private void updateFollowerHighWatermark(
-        FollowerState state,
-        OptionalLong highWatermarkOpt
-    ) {
+    FollowerState state,
+    OptionalLong highWatermarkOpt
+) {
     highWatermarkOpt.ifPresent(highWatermark -> {
-            long newHighWatermark = Math.min(endOffset().offset(), highWatermark);
-            if (state.updateHighWatermark(OptionalLong.of(newHighWatermark))) {
-                logger.debug("Follower high watermark updated to {}", newHighWatermark);
-                log.updateHighWatermark(new LogOffsetMetadata(newHighWatermark));
-                updateListenersProgress(newHighWatermark);
-            }
-        });
+        long newHighWatermark = Math.min(endOffset().offset(), highWatermark);
+        if (state.updateHighWatermark(OptionalLong.of(newHighWatermark))) {
+            logger.debug("Follower high watermark updated to {}", newHighWatermark);
+            log.updateHighWatermark(new LogOffsetMetadata(newHighWatermark));
+            updateListenersProgress(newHighWatermark);
+        }
+    });
 }
 ```
 
