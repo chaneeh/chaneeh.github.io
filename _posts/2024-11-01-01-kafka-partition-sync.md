@@ -102,8 +102,8 @@ Fetch된 데이터를 처리하고 팔로워의 로컬 로그를 업데이트합
 
 #### [method] processFetchRequest
 
-이 메서드는 thread start 이후 doWork method에 의해 지속적으로 호출되어 fetch를 진행합니다.
-리더에게 fetch 요청을 한후, 수신한 데이터들을 각 파티션별로 processPartitionData를 통해 처리합니다.
+이 메서드는 thread start 이후 `doWork` method에 의해 지속적으로 호출되어 fetch를 진행합니다.
+리더에게 fetch 요청을 한후, 수신한 데이터들을 각 파티션별로 `processPartitionData`를 통해 처리합니다.
 
 ```scala
 def processFetchRequest(
